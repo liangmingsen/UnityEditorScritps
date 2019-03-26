@@ -16,42 +16,28 @@ public class ExportUtil {
         SlothTagMono tagMono = null;
         foreach (GameObject item in list)
         {
-            StaticEditorFlags flags = GameObjectUtility.GetStaticEditorFlags(item);
-            string str = flags.ToString();
-            if (str.Contains("BatchingStatic"))
-            {
-                tagMono = item.GetComponent<SlothTagMono>();
-                if (tagMono == null)
-                {
-                    tagMono = item.AddComponent<SlothTagMono>();
-                }
-                tagMono.TagStatic = true;
-            }
-        }
-        foreach (GameObject item in list)
-        {
             tagMono = item.GetComponent<SlothTagMono>();
-            if (tagMono && tagMono.TagStatic)
+            if (GameObjectUtility.AreStaticEditorFlagsSet(item, StaticEditorFlags.BatchingStatic) || tagMono != null)
             {
-                staticList.Add(item);
+                MeshFilter mf = item.GetComponent<MeshFilter>();
+                if (mf != null && mf.sharedMesh != null)
+                {
+                    staticList.Add(item);
+                }
             }
         }
         StreamWriter sw = FileUtil.GetTagStaticFile();
-        Umeng.JSONObject rootJson = new Umeng.JSONObject();
+        Umeng.JSONArray rootJson = new Umeng.JSONArray();
 
-        //标记静态
-        JSONArray staticJson = new JSONArray();
         foreach (GameObject item in staticList)
         {
-            staticJson.Add(FileUtil.GetGameObjectPath(item));
+            rootJson.Add(FileUtil.GetGameObjectPath(item));
         }
-        rootJson.Add("tagStatic", staticJson);
-
         sw.Write(rootJson.ToString());
         sw.Close();
         Application.OpenURL(FileUtil.GetTagStaticPath());
 
-        Debug.Log("标记静态数量：" + staticJson.Count );
+        Debug.Log("标记静态数量：" + staticList.Count );
 
     }
 

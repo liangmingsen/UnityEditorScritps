@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 
 public class TagUtil {
-    public static void RemoveSlothTagMono()
+    public static void RemoveSlothTagMonoscript()
     {
         List<GameObject> list = SceneUtil.GetActiveSceneAllGO();
         SlothTagMono[] monos = null;
@@ -47,14 +47,15 @@ public class TagUtil {
             Debug.Log("读取文件信息失败");
             return;
         }
-        Umeng.JSONObject jo = Umeng.JSONObject.Parse(ta.text) as Umeng.JSONObject;
-        if (jo == null)
-        {
-            Debug.Log("从静态节点JSON转换失败");
-            return;
-        }
-        Umeng.JSONArray ja = jo["tagStatic"] as Umeng.JSONArray;
-        if(ja == null)
+        //Umeng.JSONObject jo = Umeng.JSONObject.Parse(ta.text) as Umeng.JSONObject;
+        //if (jo == null)
+        //{
+        //    Debug.Log("从静态节点JSON转换失败");
+        //    return;
+        //}
+        //Umeng.JSONArray ja = jo["tagStatic"] as Umeng.JSONArray;
+        Umeng.JSONArray ja = Umeng.JSONArray.Parse(ta.text) as Umeng.JSONArray;
+        if (ja == null)
         {
             Debug.Log("没有静态标记列表");
             return;

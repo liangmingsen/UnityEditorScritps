@@ -130,7 +130,7 @@ public class SceneUtil : MonoBehaviour {
             string pathName = FileUtil.GetGameObjectPath(tf.gameObject);
             if (dict.ContainsKey(pathName))
             {
-                //Debug.LogError("相同名字路径:" + pathName);
+                Debug.LogError("相同名字路径:" + pathName);
             }
             else
             {
