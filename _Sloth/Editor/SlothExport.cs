@@ -24,4 +24,10 @@ public partial class Sloth : Editor
         ExportUtil.ExportParticleObjects();
     }
 
+    [MenuItem("Sloth/Export/Export Fragment JSON")]
+    static void ExportFragmentObjects()
+    {
+        FragmentUtil.ExportFragmentData();
+    }
+
 }

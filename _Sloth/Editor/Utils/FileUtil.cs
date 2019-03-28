@@ -11,6 +11,8 @@ public class FileUtil {
     private static string lightmapDataFilePath = Application.dataPath + @"/_Sloth/ExportJson/lightmapData.txt";
     private static string lightmapDataFilePathAsset = @"Assets/_Sloth/ExportJson/lightmapData.txt";
     private static string particleFilePath = Application.dataPath + @"/_Sloth/ExportJson/particles.txt";
+    private static string FragmentFilePath = Application.dataPath + @"/_Sloth/ExportJson/fragment.txt";
+    private static string FragmentFilePathAsset = @"Assets/_Sloth/ExportJson/fragment.txt";
 
     private static void checkFile()
     {
@@ -18,6 +20,22 @@ public class FileUtil {
         {
             File.Delete(filepath);
         }
+    }
+
+    public static string GetFragmentFilePathAsset()
+    {
+        return FragmentFilePathAsset;
+    }
+
+    public static string GetFragmentFilePath()
+    {
+        return FragmentFilePath;
+    }
+
+    public static StreamWriter GetFragmentFile()
+    {
+        checkFile();
+        return new StreamWriter(FragmentFilePath);
     }
 
     public static StreamWriter GetParticleFile()
