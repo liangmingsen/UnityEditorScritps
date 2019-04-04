@@ -121,24 +121,6 @@ public partial class Sloth : Editor
     }
 
     /// <summary>
-    /// 删除当前场景中 ，绑在对象身上的 标记脚本
-    /// </summary>
-    [MenuItem("Sloth/Node/Remove ActiveScene SlothTagScript")]
-    static void RemoveActiveSceneSlothTagScript()
-    {
-        //NodeUtil.RemoveActiveSceneGameObjectScript<SlothTag>();
-    }
-
-    /// <summary>
-    /// 还原 当前场景中 ，绑在对象身上的 标记脚本
-    /// </summary>
-    [MenuItem("Sloth/Node/Add ActiveScene SlothTagScript")]
-    static void AddActiveSceneSlothTagScript()
-    {
-        
-    }
-
-    /// <summary>
     /// 场景中未激活的对象数量
     /// </summary>
     [MenuItem("Sloth/Node/UnActive GameObject count")]
@@ -160,5 +142,10 @@ public partial class Sloth : Editor
         {
             NodeUtil.RepetitionObjectName();
         }
+    }
+    [MenuItem("Sloth/Node/Statistical node Type")]
+    static void StatisticalNodeType()
+    {
+        NodeUtil.StatisticalNodeType();
     }
 }

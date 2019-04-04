@@ -57,20 +57,21 @@ public class ExportUtil {
                 }
             }
             StreamWriter sw = FileUtil.GetParticleFile();
-            Umeng.JSONObject rootJson = new Umeng.JSONObject();
+            Umeng.JSONArray rootJson = new Umeng.JSONArray();
 
-            //粒子
+            //所有粒子
             JSONArray psJson = new JSONArray();
             foreach (GameObject item in particleList)
             {
                 psJson.Add(FileUtil.GetGameObjectPath(item));
             }
-            rootJson.Add("particles", psJson);
+            rootJson.Add(psJson);
 
             sw.Write(rootJson.ToString());
             sw.Close();
             Application.OpenURL(FileUtil.GetParticleFilePath());
 
+            Selection.objects = particleList.ToArray();
             Debug.Log("粒子数量：" + psJson.Count);
         }
     }

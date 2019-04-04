@@ -29,11 +29,12 @@ public class ParticleUtil : MonoBehaviour
         foreach (ParticleSystem item in psGo)
         {
             ParticleSystemRenderer prs = item.gameObject.GetComponent<Renderer>() as ParticleSystemRenderer;
-            if (prs != null)
+            if (prs != null && item.gameObject.activeInHierarchy)
             {
                 _SetParticleSystemMaterialObject(prs);
             }
         }
+        
         StreamWriter sw = FileUtil.GetTempFile();
         Umeng.JSONObject rootJson = new Umeng.JSONObject();
         Umeng.JSONArray ja = new Umeng.JSONArray();
@@ -57,13 +58,14 @@ public class ParticleUtil : MonoBehaviour
         foreach (ParticleSystem item in psGo)
         {
             ParticleSystemRenderer prs = item.gameObject.GetComponent<Renderer>() as ParticleSystemRenderer;
-            if (prs != null)
+            if (prs != null && item.gameObject.activeInHierarchy)
             {
                 _SetParticleSystemMaterialObject(prs);
             }
         }
         StreamWriter sw = FileUtil.GetTempFile();
         Umeng.JSONObject rootJson = new Umeng.JSONObject();
+        Umeng.JSONArray keys = new Umeng.JSONArray();
         int count = 0;
         foreach (KeyValuePair<string, List<GameObject>> item in _materialDict)
         {
@@ -74,9 +76,10 @@ public class ParticleUtil : MonoBehaviour
                 ja.Add(FileUtil.GetGameObjectPath(go));
             }
             rootJson.Add(item.Key, ja);
+            keys.Add(item.Key);
         }
-        rootJson.Add("材质种类数:", _meshDict.Count);
-        rootJson.Add("材质总粒子数:", count);
+        rootJson.Add("keys", keys);
+
         sw.Write(rootJson.ToString());
         sw.Close();
         Application.OpenURL(FileUtil.GetTempFilePath());
@@ -215,37 +218,50 @@ public class ParticleUtil : MonoBehaviour
         string mainNam = "";
         string path = "";
         Debug.Log(prs.materials + "=====  " + prs.materials.Length);//没有材质，自动加上
-        if (prs.material.name.Contains("Default-Material") || prs.trailMaterial.name.Contains("Default-Material"))
+        //if (prs.material.name.Contains("Default-Material"))
+        //{
+        //    _unMaterialList.Add(prs.gameObject);
+        //}
+        //else
         {
-            _unMaterialList.Add(prs.gameObject);
-        }
-        else
-        {
-            if (prs.material != null && !prs.material.name.Contains("Default-Material"))
+            if (prs.material != null)
             {
-                mainNam = prs.material.name;
-                mainNam = mainNam.Replace("(Instance)", "").TrimEnd();
-                path = mainNam;
-                if (!_materialDict.ContainsKey(path))
+                if (prs.material.name.Contains("Default-Material"))
                 {
-                    _materialDict.Add(path, new List<GameObject>());
-                }
-                _materialDict[path].Add(prs.gameObject);
-            }
-            if (prs.trailMaterial != null && !prs.trailMaterial.name.Contains("Default-Material"))
-            {
-                string trailNam = prs.trailMaterial.name;
-                trailNam = trailNam.Replace("(Instance)", "").TrimEnd();
-                if (trailNam != mainNam)
-                {
-                    path = trailNam;
+                    path = "defaultMaterial";
                     if (!_materialDict.ContainsKey(path))
                     {
                         _materialDict.Add(path, new List<GameObject>());
                     }
                     _materialDict[path].Add(prs.gameObject);
                 }
+                else
+                {
+                    mainNam = prs.material.name;
+                    mainNam = mainNam.Replace("(Instance)", "").TrimEnd();
+                    path = mainNam;
+                    if (!_materialDict.ContainsKey(path))
+                    {
+                        _materialDict.Add(path, new List<GameObject>());
+                    }
+                    _materialDict[path].Add(prs.gameObject);
+                }
+                
             }
+            //if (prs.trailMaterial != null && !prs.trailMaterial.name.Contains("Default-Material"))
+            //{
+            //    string trailNam = prs.trailMaterial.name;
+            //    trailNam = trailNam.Replace("(Instance)", "").TrimEnd();
+            //    if (trailNam != mainNam)
+            //    {
+            //        path = trailNam;
+            //        if (!_materialDict.ContainsKey(path))
+            //        {
+            //            _materialDict.Add(path, new List<GameObject>());
+            //        }
+            //        _materialDict[path].Add(prs.gameObject);
+            //    }
+            //}
         }
     }
 
@@ -270,6 +286,41 @@ public class ParticleUtil : MonoBehaviour
         }
     }
 
+
+
+
+    public static void CheckParticleType()
+    {
+        List<GameObject> particleList = new List<GameObject>();
+        List<GameObject> list = SceneUtil.GetActiveSceneAllGO();
+        if (list != null)
+        {
+            int length = list.Count;
+            foreach (GameObject item in list)
+            {
+                ParticleSystem particle = item.GetComponent<ParticleSystem>();
+                if (particle != null)
+                {
+                    particleList.Add(item);
+                }
+            }
+            foreach (GameObject item in particleList)
+            {
+                if(item != null)
+                {
+                    ParticleSystemRenderer prs = item.gameObject.GetComponent<Renderer>() as ParticleSystemRenderer;
+                    if(prs != null && prs.material != null)
+                    {
+                        if (prs.material.name.Contains("Default-Material") || prs.trailMaterial.name.Contains("Default-Material"))
+                        {
+
+                        }
+                    }
+                }
+            }
+
+        }
+    }
 
 
 

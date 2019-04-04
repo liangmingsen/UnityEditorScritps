@@ -15,11 +15,9 @@ public class SlothTag : Editor
     {
         TagUtil.TagObjectStatic();
     }
-    [MenuItem("Sloth/Tag/Remove SlothTagMono Script")]
+    [MenuItem("Sloth/Tag/Remove Tag Static Script")]
     static void RemoveSlothTagMonoscript()
     {
         TagUtil.RemoveSlothTagMonoscript();
     }
-
-
 }

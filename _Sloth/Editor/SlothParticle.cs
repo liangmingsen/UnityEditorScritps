@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class SlothCheck : Editor {
 
-    [MenuItem("Sloth/Particle/Export ActiveScene Particle UnMaterial List")]
+    //[MenuItem("Sloth/Particle/Export ActiveScene Particle UnMaterial List")]
     static void ExportActiveSceneParticleListUnMaterial()
     {
         ParticleUtil.ExportActiveSceneParticleListUnMaterial();
@@ -17,7 +17,7 @@ public class SlothCheck : Editor {
         ParticleUtil.ExportActiveSceneParticleListMaterial();
     }
 
-    [MenuItem("Sloth/Particle/Export ActiveScene Particle Mesh List")]
+    //[MenuItem("Sloth/Particle/Export ActiveScene Particle Mesh List")]
     static void ExportActiveSceneParticleMeshList()
     {
         ParticleUtil.ExportActiveSceneParticleListMesh();

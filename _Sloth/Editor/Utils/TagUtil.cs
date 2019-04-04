@@ -23,7 +23,7 @@ public class TagUtil {
         }
         Debug.Log("移除绑在对象身上的ShothTagMono脚本数量: " + count);
     }
-   
+
     public static void UnTabObjectStatic()
     {
         List<GameObject> list = SceneUtil.GetActiveSceneAllGO();
@@ -47,13 +47,6 @@ public class TagUtil {
             Debug.Log("读取文件信息失败");
             return;
         }
-        //Umeng.JSONObject jo = Umeng.JSONObject.Parse(ta.text) as Umeng.JSONObject;
-        //if (jo == null)
-        //{
-        //    Debug.Log("从静态节点JSON转换失败");
-        //    return;
-        //}
-        //Umeng.JSONArray ja = jo["tagStatic"] as Umeng.JSONArray;
         Umeng.JSONArray ja = Umeng.JSONArray.Parse(ta.text) as Umeng.JSONArray;
         if (ja == null)
         {
@@ -69,6 +62,10 @@ public class TagUtil {
         for (int i = 0; i < count; i++)
         {
             nam = ja[i];
+            if (string.IsNullOrEmpty(nam))
+            {
+                continue;
+            }
             if (allDict.ContainsKey(nam))
             {
                 go = allDict[nam];

@@ -126,7 +126,6 @@ public class NodeUtil {
             _renameIndex = 0;
             List<GameObject> goList = new List<GameObject>();
             GameObject[] gos = s.GetRootGameObjects();
-            Dictionary<int, List<GameObject>> dict = new Dictionary<int, List<GameObject>>();
             foreach (GameObject item in gos)
             {
                 _CheckObjectName(item.transform, ref goList);
@@ -163,5 +162,54 @@ public class NodeUtil {
             }
         }
     }
+
+    #region 节点类型统计
+
+    public static void StatisticalNodeType()
+    {
+        GameObject root = Selection.activeGameObject;
+        if (root != null)
+        {
+            Dictionary<string, List<GameObject>> dict = new Dictionary<string, List<GameObject>>();
+            BaseElement[] elements = root.GetComponentsInChildren<BaseElement>();
+            if(elements != null)
+            {
+                StreamWriter sw = FileUtil.GetTempFile();
+                Umeng.JSONObject jo = new Umeng.JSONObject();
+                string key = "";
+                foreach (BaseElement item in elements)
+                {
+                    key = item.GetType().ToString();
+                    if (!dict.ContainsKey(key))
+                    {
+                        dict.Add(key, new List<GameObject>());
+                    }
+                    dict[key].Add(item.gameObject);
+                }
+                jo.Add("typeCount", dict.Count);
+                foreach (KeyValuePair<string, List<GameObject>> item in dict)
+                {
+                    Umeng.JSONObject cjo = new Umeng.JSONObject();
+                    jo.Add(item.Key, cjo);
+                    cjo.Add("count", item.Value.Count);
+                    int childNum = 0;
+                    foreach (GameObject go in item.Value)
+                    {
+                        Transform[] tfs = go.GetComponentsInChildren<Transform>();
+                        childNum = Mathf.Max(tfs.Length, childNum);
+                        cjo.Add(FileUtil.GetGameObjectPath(go), tfs.Length);
+                    }
+                }
+                sw.Write(jo.ToString());
+                sw.Close();
+                Application.OpenURL(FileUtil.GetTempFilePath());
+
+            }
+            Debug.Log("节点总量：" + dict.Count);
+        }
+    }
+
+
+    #endregion
 
 }

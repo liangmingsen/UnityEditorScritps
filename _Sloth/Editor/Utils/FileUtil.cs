@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Text;
 using UnityEngine;
 
@@ -10,15 +8,24 @@ public class FileUtil {
     private static string staticFilePathAsset = @"Assets/_Sloth/ExportJson/tagStatic.txt";
     private static string lightmapDataFilePath = Application.dataPath + @"/_Sloth/ExportJson/lightmapData.txt";
     private static string lightmapDataFilePathAsset = @"Assets/_Sloth/ExportJson/lightmapData.txt";
-    private static string particleFilePath = Application.dataPath + @"/_Sloth/ExportJson/particles.txt";
-    private static string FragmentFilePath = Application.dataPath + @"/_Sloth/ExportJson/fragment.txt";
-    private static string FragmentFilePathAsset = @"Assets/_Sloth/ExportJson/fragment.txt";
+    private static string particleFilePath = Application.dataPath + @"/_Sloth/ExportJson/particles.json";
+    private static string FragmentFilePath = Application.dataPath + @"/_Sloth/ExportJson/fragment.json";
+    private static string FragmentFilePathAsset = @"Assets/_Sloth/ExportJson/fragment.json";
 
-    private static void checkFile()
+    private static void checkFile(string path)
     {
-        if (File.Exists(filepath))
+        if (File.Exists(path))
         {
-            File.Delete(filepath);
+            if (path.Contains(".txt"))
+            {
+                string destFile = path.Replace(".txt", "_1.txt");
+                if (File.Exists(destFile))
+                {
+                    File.Delete(destFile);
+                }
+                File.Copy(path, destFile);
+            }
+            File.Delete(path);
         }
     }
 
@@ -34,13 +41,13 @@ public class FileUtil {
 
     public static StreamWriter GetFragmentFile()
     {
-        checkFile();
+        checkFile(FragmentFilePath);
         return new StreamWriter(FragmentFilePath);
     }
 
     public static StreamWriter GetParticleFile()
     {
-        checkFile();
+        checkFile(particleFilePath);
         return new StreamWriter(particleFilePath);
     }
 
@@ -61,7 +68,7 @@ public class FileUtil {
 
     public static StreamWriter GetLightmapDataFile()
     {
-        checkFile();
+        checkFile(lightmapDataFilePath);
         return new StreamWriter(lightmapDataFilePath);
     }
 
@@ -77,7 +84,7 @@ public class FileUtil {
 
     public static StreamWriter GetTagStaticFile()
     {
-        checkFile();
+        checkFile(staticFilePath);
         return new StreamWriter(staticFilePath);
     }
 
@@ -88,7 +95,7 @@ public class FileUtil {
 
     public static StreamWriter GetTempFile()
     {
-        checkFile();
+        checkFile(filepath);
         return new StreamWriter(filepath);
     }
 

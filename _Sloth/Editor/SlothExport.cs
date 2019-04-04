@@ -18,7 +18,7 @@ public partial class Sloth : Editor
         BakedLightmapUtil.ReadBakedLightmap();
     }
 
-    [MenuItem("Sloth/Export/Export Particle JSON")]
+    //[MenuItem("Sloth/Export/Export Particle JSON")]
     static void ExportParticleObjects()
     {
         ExportUtil.ExportParticleObjects();
@@ -27,7 +27,7 @@ public partial class Sloth : Editor
     [MenuItem("Sloth/Export/Export Fragment JSON")]
     static void ExportFragmentObjects()
     {
-        FragmentUtil.ExportFragmentData();
+        FragmentUtil.ExportFragmentToJson();
     }
 
 }

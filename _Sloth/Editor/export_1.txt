@@ -1,0 +1,1 @@
+{"typeCount":1, "AnimEnemyPro":{"count":1, "GridGroup#Grid_1#Home_Yun03_Kai06(Clone)":6}}
