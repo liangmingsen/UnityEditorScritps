@@ -18,6 +18,12 @@ public partial class Sloth : Editor
         BakedLightmapUtil.ReadBakedLightmap();
     }
 
+    [MenuItem("Sloth/Export/Select Export BakeLightmap JSON")]
+    static void ExportReadBakedLightmapSelect()
+    {
+        BakedLightmapUtil.ReadBakedLightmap(Selection.gameObjects, true);
+    }
+
     //[MenuItem("Sloth/Export/Export Particle JSON")]
     static void ExportParticleObjects()
     {
@@ -28,6 +34,12 @@ public partial class Sloth : Editor
     static void ExportFragmentObjects()
     {
         FragmentUtil.ExportFragmentToJson();
+    }
+
+    [MenuItem("Sloth/Export/L2/Export New GridGroup")]
+    static void ExportNewGridNodes_Level2()
+    {
+        NodeUtil.ExportNewGridNodes(2);
     }
 
 }

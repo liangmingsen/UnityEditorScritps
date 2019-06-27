@@ -71,9 +71,9 @@ public class BoundUtil {
             {
                 foreach (MeshFilter mf in mfs)
                 {
-                    if (mf.mesh)
+                    if (mf.sharedMesh)
                     {
-                        bounds.Encapsulate(mf.mesh.bounds);
+                        bounds.Encapsulate(mf.sharedMesh.bounds);
                     }
                 }
             }
@@ -81,9 +81,9 @@ public class BoundUtil {
         else
         {
             MeshFilter mf = target.GetComponentInChildren<MeshFilter>();
-            if (mf && mf.mesh)
+            if (mf && mf.sharedMesh)
             {
-                bounds = mf.mesh.bounds;
+                bounds = mf.sharedMesh.bounds;
             }
         }
         return bounds;

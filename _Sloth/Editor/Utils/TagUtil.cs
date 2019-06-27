@@ -41,7 +41,7 @@ public class TagUtil {
 
     public static void TagObjectStatic()
     {
-        TextAsset ta = AssetDatabase.LoadAssetAtPath<TextAsset>(FileUtil.GetTagStaticAssetPath());
+        TextAsset ta = AssetDatabase.LoadAssetAtPath<TextAsset>(FileUtils.GetTagStaticAssetPath());
         if (ta == null)
         {
             Debug.Log("读取文件信息失败");

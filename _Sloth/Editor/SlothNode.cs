@@ -18,7 +18,7 @@ public partial class Sloth : Editor
     public static void GetNodePath()
     {
         GameObject[] objs = Selection.gameObjects;
-        StreamWriter sr = FileUtil.GetTempFile();
+        StreamWriter sr = FileUtils.GetTempFile();
         for (var i = 0; i < objs.Length; i++)
         {
             GameObject obj = objs[i];
@@ -35,7 +35,7 @@ public partial class Sloth : Editor
             sr.WriteLine(strPath);
         }
         sr.Close();
-        Application.OpenURL(FileUtil.GetTempFilePath());
+        Application.OpenURL(FileUtils.GetTempFilePath());
     }
 
     /// <summary>
@@ -46,6 +46,12 @@ public partial class Sloth : Editor
     {
         int count = SceneUtil.GetActiveSceneAllGameObjectCount();
         Debug.Log("当前游戏精灵总数量：" + count);
+    }
+
+    [MenuItem("Sloth/Node/Select Nodes Count")]
+    static void CheckSelectNodesCount()
+    {
+        NodeUtil.CheckSelectNodesCount();
     }
 
     /// <summary>
@@ -148,4 +154,40 @@ public partial class Sloth : Editor
     {
         NodeUtil.StatisticalNodeType();
     }
+
+    [MenuItem("Sloth/Node/Change Node Parent")]
+    static void ChangeNodeParent()
+    {
+        NodeUtil.ChangeNodeParent();
+    }
+
+    [MenuItem("Sloth/Node/L2/Write New Grid Groud")]
+    static void WriteNewGridGroud()
+    {
+        NodeUtil.WriteNewGridGroud(2);
+    }
+
+    [MenuItem("Sloth/Node/L2/Write New Grid Groud Child")]
+    static void WriteNewGridGroudChild()
+    {
+        NodeUtil.WriteNewGridGroudChild(2);
+    }
+
+    [MenuItem("Sloth/Node/Check Collider CenterZ")]
+    static void CheckColliderCenterZ()
+    {
+        NodeUtil.CheckColliderCenterZ();
+    }
+
+    [MenuItem("Sloth/Node/Del_All_Animator")]
+    static void Del_All_Animator()
+    {
+        NodeUtil.Del_All_Animator();
+    }
+    [MenuItem("Sloth/Node/Un_Del_All_Animator")]
+    static void UnDel_All_Animator()
+    {
+        NodeUtil.UnDel_All_Animator();
+    }
+
 }

@@ -1,3 +1,0 @@
-# _Sloth
-
-unity plugin

@@ -21,6 +21,7 @@ public struct FragmentData
     }
 }
 /// <summary>
+/// 分段隐藏计算包围盒时，发现Z轴非统一方向。
 /// 分段隐藏玩法 ：
 /// 1：查找场景中的脚本 Grid 按此分段。
 /// 2：美术标记剩余的显示对象打上脚本 SlothFragmentMono。
@@ -33,6 +34,7 @@ public class FragmentUtil {
     
     public static void ExportFragmentToJson()
     {
+        _fdDict.Clear();
         _FindGridToDict();
         _FindAllFragmentScriptToChilds();
         _ToJSON();
@@ -43,9 +45,40 @@ public class FragmentUtil {
         _BindScriptToGridObjChilden();
     }
 
+    public static void SelectCalculationBound()
+    {
+        GameObject[] gos = Selection.gameObjects;
+        if(gos != null)
+        {
+            List<GameObject> meshObjs = new List<GameObject>();
+            foreach (GameObject go in gos)
+            {
+                //if(go.GetComponent<SlothFragment>() != null)
+                {
+                    Transform[] ctfs = go.GetComponentsInChildren<Transform>();
+                    foreach (Transform t in ctfs)
+                    {
+                        MeshFilter mf = t.GetComponent<MeshFilter>();
+                        if (mf != null && mf.sharedMesh != null)
+                        {
+                            Bounds b = BoundUtil.GetLocalBounds(t.gameObject, false);
+                            Debug.Log(t.name + "Bounds :" + b);
+                            meshObjs.Add(t.gameObject);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     public static void CalculationObjectFragmentIndexs()
     {
-        _CalculationObjectFragmentIndexs();
+        _CalculationObjectFragmentIndexs(SceneUtil.GetActiveSceneAllGO());
+    }
+
+    public static void SelectCalculationObjectFragmentIndexs()
+    {
+        _CalculationObjectFragmentIndexs(Selection.gameObjects.ToList<GameObject>());
     }
 
     public static void UnBindSlothFragmentMonoscript()
@@ -81,7 +114,6 @@ public class FragmentUtil {
         {
             if (item.activeInHierarchy && item.GetComponent<User.TileMap.Grid>())
             {
-
                 User.TileMap.Grid grid = item.GetComponent<User.TileMap.Grid>();
                 if (grid)
                 {
@@ -105,7 +137,7 @@ public class FragmentUtil {
             if (item.activeInHierarchy)
             {
                 tag = item.GetComponent<SlothFragmentMono>();
-                if (tag != null)
+                if (tag != null && _CheckComponent(item.transform))
                 {
                     foreach (int idx in tag.FragmentIndexs)
                     {
@@ -121,7 +153,7 @@ public class FragmentUtil {
 
     private static void _ToJSON()
     {
-        StreamWriter sw = FileUtil.GetFragmentFile();
+        StreamWriter sw = FileUtils.GetFragmentFile();
         Umeng.JSONArray rootJson = new Umeng.JSONArray();
         int cnum = 0;
         int length = _fdDict.Count;
@@ -138,7 +170,7 @@ public class FragmentUtil {
                 Umeng.JSONArray childList = new Umeng.JSONArray();
                 foreach (GameObject go in list)
                 {
-                    childList.Add(FileUtil.GetGameObjectPath(go));
+                    childList.Add(FileUtils.GetGameObjectPath(go));
                 }
                 cjo.Add("childs", childList);
                 cnum += childList.Count;
@@ -147,7 +179,7 @@ public class FragmentUtil {
         }
         sw.Write(rootJson.ToString());
         sw.Close();
-        Application.OpenURL(FileUtil.GetFragmentFilePath());
+        Application.OpenURL(FileUtils.GetFragmentFilePath());
         Debug.Log("分段导出完毕 导出数量:" + cnum);
     }
     #endregion
@@ -168,9 +200,7 @@ public class FragmentUtil {
                 {
                     ctf = item.transform.GetChild(i);
                     //排除Grid下，挂有 PathToMoveEffect 脚本的对象
-                    if (ctf.GetComponent<SlothFragmentMono>() == null
-                        && ctf.GetComponent<PathToMoveEffect>() == null//纸飞机路径
-                        && ctf.GetComponent<NormalSkateboardVehicle>() == null)//滑板
+                    if (_CheckComponent(ctf))//滑板
                     {
                         SlothFragmentMono tag = ctf.gameObject.AddComponent<SlothFragmentMono>();
                         tag.FragmentIndexs = new int[1] { grid.m_id };
@@ -181,10 +211,27 @@ public class FragmentUtil {
         }
         Debug.Log("绑脚本 SlothFragmentMono 数量： " + count);
     }
+    /// <summary>
+    /// true:可分段。false:不可加入分段
+    /// </summary>
+    /// <param name="ctf"></param>
+    /// <returns></returns>
+    private static bool _CheckComponent(Transform ctf)
+    {
+        //排除Grid下，挂有 PathToMoveEffect 脚本的对象
+        if (ctf.GetComponent<DropDieTrigger>() == null
+            && ctf.GetComponent<ActiveDiamond>() == null
+            && ctf.GetComponent<PathToMoveEffect>() == null//纸飞机路径
+            && ctf.GetComponent<NormalSkateboardVehicle>() == null)//滑板
+        {
+            return true;
+        }
+        return false;
+    }
     #endregion
 
     #region 为绑定脚本的对象，按包围盒计算所在分段
-    private static void _CalculationObjectFragmentIndexs()
+    private static void _CalculationObjectFragmentIndexs(List<GameObject> calculatGos)
     {
         List<GameObject> gos = SceneUtil.GetActiveSceneAllGO();
         SlothFragmentMono tag = null;
@@ -197,7 +244,7 @@ public class FragmentUtil {
             }
         }
 
-        foreach (GameObject item in gos)
+        foreach (GameObject item in calculatGos)
         {
             tag = item.GetComponent<SlothFragmentMono>();
             if(tag != null)
@@ -215,7 +262,7 @@ public class FragmentUtil {
                     }
                 }
                 tag.FragmentIndexs = newList.ToArray<int>();
-                _IsOutGridForIgnoremSamplingInterval(item.transform, gridList);
+                //_IsOutGridForIgnoremSamplingInterval(item.transform, gridList);
             }
         }
         Debug.Log("计算完毕");
@@ -288,7 +335,7 @@ public class FragmentUtil {
     #region 根据已有的JSON还原脚本到对象
     private static void _ReductionSlothScript()
     {
-        TextAsset ta = AssetDatabase.LoadAssetAtPath<TextAsset>(FileUtil.GetFragmentFilePathAsset());
+        TextAsset ta = AssetDatabase.LoadAssetAtPath<TextAsset>(FileUtils.GetFragmentFilePathAsset());
         if (ta == null)
         {
             Debug.Log("读取文件信息失败");
@@ -323,12 +370,17 @@ public class FragmentUtil {
                     }
                     if (allDict.ContainsKey(gname))
                     {
-                        SlothFragmentMono tag = allDict[gname].GetComponent<SlothFragmentMono>();
+                        Transform sfTf = allDict[gname].transform;
+                        if (!_CheckComponent(sfTf))//数据还原时，也检查是否被后来追加了排除的对象。
+                        {
+                            continue;
+                        }
+                        SlothFragmentMono tag = sfTf.GetComponent<SlothFragmentMono>();
                         if (tag == null)
                         {
-                            if (!allDict[gname].GetComponent<User.TileMap.Grid>())
+                            if (!sfTf.GetComponent<User.TileMap.Grid>())
                             {
-                                tag = allDict[gname].AddComponent<SlothFragmentMono>();
+                                tag = sfTf.gameObject.AddComponent<SlothFragmentMono>();
                             }
                         }
                         if (tag != null)

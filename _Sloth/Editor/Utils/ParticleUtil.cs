@@ -35,18 +35,18 @@ public class ParticleUtil : MonoBehaviour
             }
         }
         
-        StreamWriter sw = FileUtil.GetTempFile();
+        StreamWriter sw = FileUtils.GetTempFile();
         Umeng.JSONObject rootJson = new Umeng.JSONObject();
         Umeng.JSONArray ja = new Umeng.JSONArray();
         foreach (GameObject item in _unMaterialList)
         {
-            ja.Add(FileUtil.GetGameObjectPath(item));
+            ja.Add(FileUtils.GetGameObjectPath(item));
         }
         rootJson.Add("unMaterial", ja);
 
         sw.Write(rootJson.ToString());
         sw.Close();
-        Application.OpenURL(FileUtil.GetTempFilePath());
+        Application.OpenURL(FileUtils.GetTempFilePath());
         Selection.objects = _unMaterialList.ToArray();
         Debug.Log("粒子总数:" + _particleCount + " 没有附材质的粒子数量 :" + _unMaterialList.Count);
     }
@@ -63,7 +63,7 @@ public class ParticleUtil : MonoBehaviour
                 _SetParticleSystemMaterialObject(prs);
             }
         }
-        StreamWriter sw = FileUtil.GetTempFile();
+        StreamWriter sw = FileUtils.GetTempFile();
         Umeng.JSONObject rootJson = new Umeng.JSONObject();
         Umeng.JSONArray keys = new Umeng.JSONArray();
         int count = 0;
@@ -73,7 +73,7 @@ public class ParticleUtil : MonoBehaviour
             count += item.Value.Count;
             foreach (GameObject go in item.Value)
             {
-                ja.Add(FileUtil.GetGameObjectPath(go));
+                ja.Add(FileUtils.GetGameObjectPath(go));
             }
             rootJson.Add(item.Key, ja);
             keys.Add(item.Key);
@@ -82,7 +82,7 @@ public class ParticleUtil : MonoBehaviour
 
         sw.Write(rootJson.ToString());
         sw.Close();
-        Application.OpenURL(FileUtil.GetTempFilePath());
+        Application.OpenURL(FileUtils.GetTempFilePath());
 
         Debug.Log("粒子总数:" + _particleCount + " 使用了材质的粒子数:" + _materialDict.Count);
     }
@@ -101,7 +101,7 @@ public class ParticleUtil : MonoBehaviour
                 _SetParticleSystemMeshObject(prs);
             }
         }
-        StreamWriter sw = FileUtil.GetTempFile();
+        StreamWriter sw = FileUtils.GetTempFile();
         Umeng.JSONObject rootJson = new Umeng.JSONObject();
         int count = 0;
         foreach (KeyValuePair<string, List<GameObject>> item in _meshDict)
@@ -110,7 +110,7 @@ public class ParticleUtil : MonoBehaviour
             count += item.Value.Count;
             foreach (GameObject go in item.Value)
             {
-                ja.Add(FileUtil.GetGameObjectPath(go));
+                ja.Add(FileUtils.GetGameObjectPath(go));
             }
             rootJson.Add(item.Key, ja);
         }
@@ -118,7 +118,7 @@ public class ParticleUtil : MonoBehaviour
         rootJson.Add("网格总粒子数:", count);
         sw.Write(rootJson.ToString());
         sw.Close();
-        Application.OpenURL(FileUtil.GetTempFilePath());
+        Application.OpenURL(FileUtils.GetTempFilePath());
 
         Debug.Log("粒子总数:" + _particleCount + " 使用了网格的粒子数:" + _meshDict.Count);
     }
@@ -281,7 +281,7 @@ public class ParticleUtil : MonoBehaviour
             else
             {
                 _unMeshList.Add(prs.mesh);
-                Debug.LogError("粒子设置了网格渲染，但没有附网格" + FileUtil.GetGameObjectPath(prs.gameObject));
+                Debug.LogError("粒子设置了网格渲染，但没有附网格" + FileUtils.GetGameObjectPath(prs.gameObject));
             }
         }
     }

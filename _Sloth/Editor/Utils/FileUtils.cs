@@ -2,7 +2,7 @@
 using System.Text;
 using UnityEngine;
 
-public class FileUtil {
+public class FileUtils {
     private static string filepath = Application.dataPath + @"/_Sloth/Editor/export.txt";
     private static string staticFilePath = Application.dataPath + @"/_Sloth/ExportJson/tagStatic.txt";
     private static string staticFilePathAsset = @"Assets/_Sloth/ExportJson/tagStatic.txt";
@@ -11,22 +11,63 @@ public class FileUtil {
     private static string particleFilePath = Application.dataPath + @"/_Sloth/ExportJson/particles.json";
     private static string FragmentFilePath = Application.dataPath + @"/_Sloth/ExportJson/fragment.json";
     private static string FragmentFilePathAsset = @"Assets/_Sloth/ExportJson/fragment.json";
+    private static string SpecialFilePath = Application.dataPath + @"/_Sloth/ExportJson/special.json";
+    private static string SpecialFragmentFilePathAsset = @"Assets/_Sloth/ExportJson/special.json";
+    private static string GridGroupPath = Application.dataPath + @"/_Sloth/ExportJson/NewGridGroup";
+    private static string GridGroupPathAsset = @"Assets/_Sloth/ExportJson/NewGridGroup";
+    private static string CorrectPath = Application.dataPath + @"/_Sloth/ExportJson/CorrectData";
+    private static string CorrectPathAsset = @"Assets/_Sloth/ExportJson/CorrectData";
 
     private static void checkFile(string path)
     {
         if (File.Exists(path))
         {
-            if (path.Contains(".txt"))
-            {
-                string destFile = path.Replace(".txt", "_1.txt");
-                if (File.Exists(destFile))
-                {
-                    File.Delete(destFile);
-                }
-                File.Copy(path, destFile);
-            }
             File.Delete(path);
         }
+    }
+
+    public static StreamWriter GetCorrectFile()
+    {
+        checkFile(GetCorrectPath());
+        return new StreamWriter(GetCorrectPath());
+    }
+    public static string GetCorrectPathAsset()
+    {
+        return CorrectPathAsset + ".json";
+    }
+    public static string GetCorrectPath()
+    {
+        return CorrectPath + ".json";
+    }
+
+    public static StreamWriter GetNewGridGroupFile(string level)
+    {
+        checkFile(GetNewGridGroupPath(level));
+        return new StreamWriter(GetNewGridGroupPath(level));
+    }
+    public static string GetNewGridGroupPathAsset(string level)
+    {
+        return GridGroupPathAsset + level + ".json";
+    }
+    public static string GetNewGridGroupPath(string level)
+    {
+        return GridGroupPath + level + ".json";
+    }
+
+    public static string GetSpecialFilePathAsset()
+    {
+        return SpecialFragmentFilePathAsset;
+    }
+
+    public static string GetSpecialFilePath()
+    {
+        return SpecialFilePath;
+    }
+
+    public static StreamWriter GetSpecialFile()
+    {
+        checkFile(SpecialFilePath);
+        return new StreamWriter(SpecialFilePath);
     }
 
     public static string GetFragmentFilePathAsset()

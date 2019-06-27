@@ -7,7 +7,111 @@ using UnityEditor;
 using System.IO;
 
 public class SceneUtil : MonoBehaviour {
-    
+
+    #region 导出选中所有对象，删除前/后 路径，最后找出已删除所有对象并导出路径。
+    public static void ExportSceneSelectObjs(string nam)
+    {
+        Transform[] tfs = Selection.transforms;
+        Umeng.JSONObject rootJson = new Umeng.JSONObject();
+        foreach (var t in tfs)
+        {
+            string path = FileUtils.GetGameObjectPath(t.gameObject);
+            rootJson.Add(path, path);
+        }
+        string file_path = Application.dataPath + string.Format("/_Sloth/Editor/select_{0}_{1}.txt", nam, System.DateTime.Now.Hour + "_" + System.DateTime.Now.Minute + "_" + System.DateTime.Now.Second);
+        StreamWriter sw = new StreamWriter(file_path);
+        sw.Write(rootJson.ToString());
+        sw.Close();
+        Application.OpenURL(file_path);
+
+        Debug.Log("数量：" + rootJson.Count);
+    }
+    public static void CheckDelectFormJSON()
+    {
+        object[] objs = Selection.objects;
+        if (objs.Length == 2)
+        {
+            string a = objs[0].ToString();
+            string b = objs[1].ToString();
+            Umeng.JSONObject top = Umeng.JSONObject.Parse(a) as Umeng.JSONObject;
+            Umeng.JSONObject back = Umeng.JSONObject.Parse(b) as Umeng.JSONObject;
+            if (top != null && back != null)
+            {
+                List<string> del_list = new List<string>();
+                int length = top.Count;
+                for (int i = 0; i < length; i++)
+                {
+                    string top_path = top[i];
+                    string back_path = back[top_path];
+                    if (back_path != top_path)
+                    {
+                        del_list.Add(top_path);
+                    }
+                }
+                Umeng.JSONArray rootJson = new Umeng.JSONArray();
+                foreach (string item in del_list)
+                {
+                    Debug.Log("del ::  " + item);
+                    rootJson.Add(item);
+                }
+                string file_path = Application.dataPath + string.Format("/_Sloth/Editor/select_{0}_{1}.txt", "del", System.DateTime.Now.Hour + "_" + System.DateTime.Now.Minute + "_" + System.DateTime.Now.Second);
+                StreamWriter sw = new StreamWriter(file_path);
+                sw.Write(rootJson.ToString());
+                sw.Close();
+                Application.OpenURL(file_path);
+
+                Debug.Log("数量：" + rootJson.Count);
+            }
+        }
+    }
+    public static void HandleDelectObjects()
+    {
+        object[] objs = Selection.objects;
+        if(objs.Length == 1)
+        {
+            string a = objs[0].ToString();
+            Umeng.JSONArray dels = Umeng.JSONArray.Parse(a) as Umeng.JSONArray;
+            if(dels != null)
+            {
+                int length = dels.Count;
+                for (int i = 0; i < length; i++)
+                {
+                    string path = dels[i];
+                    string new_path = path.Replace('#', '/');
+                    
+                    GameObject del_go = GameObject.Find(new_path);
+                    if(del_go == null)
+                    {
+                        Debug.LogError("没找到对象:  " + new_path);
+                        continue;
+                    }
+
+
+                }
+            }
+        }
+    }
+    #endregion
+
+
+    public static void ExportGameobjectUID()
+    {
+        List<GameObject> list = GetActiveSceneAllGO();
+        Umeng.JSONObject rootJson = new Umeng.JSONObject();
+        foreach (GameObject item in list)
+        {
+            if(item.GetComponent<MeshRenderer>() != null)
+            {
+                rootJson.Add(item.GetInstanceID().ToString(), FileUtils.GetGameObjectPath(item));
+            }
+        }
+        StreamWriter sw = FileUtils.GetTempFile();
+        sw.Write(rootJson.ToString());
+        sw.Close();
+        Application.OpenURL(FileUtils.GetTempFilePath());
+
+        Debug.Log("数量：" + rootJson.Count);
+    }
 
     public static void CheckTextureReferenceLose()
     {
@@ -127,7 +231,7 @@ public class SceneUtil : MonoBehaviour {
     {
         if (tf != null)
         {
-            string pathName = FileUtil.GetGameObjectPath(tf.gameObject);
+            string pathName = FileUtils.GetGameObjectPath(tf.gameObject);
             if (dict.ContainsKey(pathName))
             {
                 Debug.LogError("相同名字路径:" + pathName);
@@ -160,4 +264,6 @@ public class SceneUtil : MonoBehaviour {
             AssetDatabase.Refresh();
         }
     }
+
+
 }

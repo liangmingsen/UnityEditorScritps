@@ -25,4 +25,34 @@ public class SlothScene : Editor
             BakedLightmapUtil.WriteBakeLightmap();
         }
     }
+
+    [MenuItem("Sloth/Scene/导出选中对象路径 - 未删前")]
+    static void ExportSceneSelectObjs()
+    {
+        SceneUtil.ExportSceneSelectObjs("top");
+    }
+
+    [MenuItem("Sloth/Scene/导出选中对象路径 - 删除后")]
+    static void ExportSceneSelectObjs2()
+    {
+        SceneUtil.ExportSceneSelectObjs("back");
+    }
+
+    [MenuItem("Sloth/Scene/CheckDelect Form JSON")]
+    static void CheckDelectFormJSON()
+    {
+        SceneUtil.CheckDelectFormJSON();
+    }
+
+    [MenuItem("Sloth/Scene/Handle Delect Objects")]
+    static void HandleDelectObjects()
+    {
+        SceneUtil.HandleDelectObjects();
+    }
+
+    [MenuItem("Sloth/Scene/Export Gameobject uid")]
+    static void ExportGameobjectUID()
+    {
+        SceneUtil.ExportGameobjectUID();
+    }
 }

@@ -26,16 +26,16 @@ public class ExportUtil {
                 }
             }
         }
-        StreamWriter sw = FileUtil.GetTagStaticFile();
+        StreamWriter sw = FileUtils.GetTagStaticFile();
         Umeng.JSONArray rootJson = new Umeng.JSONArray();
 
         foreach (GameObject item in staticList)
         {
-            rootJson.Add(FileUtil.GetGameObjectPath(item));
+            rootJson.Add(FileUtils.GetGameObjectPath(item));
         }
         sw.Write(rootJson.ToString());
         sw.Close();
-        Application.OpenURL(FileUtil.GetTagStaticPath());
+        Application.OpenURL(FileUtils.GetTagStaticPath());
 
         Debug.Log("标记静态数量：" + staticList.Count );
 
@@ -56,20 +56,20 @@ public class ExportUtil {
                     particleList.Add(item);
                 }
             }
-            StreamWriter sw = FileUtil.GetParticleFile();
+            StreamWriter sw = FileUtils.GetParticleFile();
             Umeng.JSONArray rootJson = new Umeng.JSONArray();
 
             //所有粒子
             JSONArray psJson = new JSONArray();
             foreach (GameObject item in particleList)
             {
-                psJson.Add(FileUtil.GetGameObjectPath(item));
+                psJson.Add(FileUtils.GetGameObjectPath(item));
             }
             rootJson.Add(psJson);
 
             sw.Write(rootJson.ToString());
             sw.Close();
-            Application.OpenURL(FileUtil.GetParticleFilePath());
+            Application.OpenURL(FileUtils.GetParticleFilePath());
 
             Selection.objects = particleList.ToArray();
             Debug.Log("粒子数量：" + psJson.Count);

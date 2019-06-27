@@ -9,14 +9,14 @@ public static class AssetMethod
         var ti = assetImporter as TextureImporter;
         if (ti != null)
         {
-            var tis = new TextureImporterSettings();
-            var tips = new TextureImporterPlatformSettings();
-            var x = setting.settings;
-            x.generalSettings.readable = true;
-            setting.settings = x;
-            setting.settings.Use(tis, tips);
-            ti.SetPlatformTextureSettings(tips);
-            ti.SetTextureSettings(tis);
+            //var tis = new TextureImporterSettings();
+            //var tips = new TextureImporterPlatformSettings();
+            //var x = setting.settings;
+            //x.generalSettings.readable = true;
+            //setting.settings = x;
+            //setting.settings.Use(tis, tips);
+            //ti.SetPlatformTextureSettings(tips);
+            //ti.SetTextureSettings(tis);
         }
     }
 }
