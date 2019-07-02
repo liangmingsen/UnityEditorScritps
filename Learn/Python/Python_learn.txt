@@ -1,0 +1,15 @@
+.py与.pyc文件的区别。
+	.py：原始程序代码文件。
+	.pyc：编译成的中间文件。为加快下次执行速度。只有在import相应的.py文件时生成。
+	
+打开文件操作。
+由于文件读写时都有可能产生IOError，一旦出错，后面的f.close()就不会调用。所以，为了保证无论是否出错都能正确地关闭文件，我们可以使用try ... finally来实现：
+try:
+	f = open("path", "r")
+finally:
+	if f:
+		f.close()
+
+但是每次都这么写实在太繁琐，所以，Python引入了with语句来自动帮我们调用close()方法：
+with open("path", "r") as f:
+	print(f.read())
