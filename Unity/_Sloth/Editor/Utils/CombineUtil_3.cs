@@ -336,4 +336,181 @@ public class CombineUtil_3 : CombineBase
         DebugLog();
     }
 
+    private static void DoDelAnimation(Transform node)
+    {
+        Animation anim = node.GetComponent<Animation>();
+        if (anim != null)
+        {
+            GameObject.DestroyImmediate(anim);
+        }
+        for (int i = 0; i < node.childCount; i++)
+        {
+            Transform child = node.GetChild(i);
+            DoDelAnimation(child);
+        }
+    }
+
+    private static void DoDelAnimator(Transform node)
+    {
+        Animator anim = node.GetComponent<Animator>();
+        if (anim != null)
+        {
+            GameObject.DestroyImmediate(anim);
+        }
+        for (int i = 0; i < node.childCount; i++)
+        {
+            Transform child = node.GetChild(i);
+            DoDelAnimator(child);
+        }
+    }
+    public static void Del_All_Animator()
+    {
+        GameObject[] gos = Selection.gameObjects;
+        foreach (GameObject go in gos)
+        {
+            Transform tf = go.transform;
+            DoDelAnimator(tf);
+        }
+    }
+
+    private static void DoRewrite_GridId(Transform node, int gridIndex)
+    {
+        BaseElement ele = node.GetComponent<BaseElement>();
+        if (ele != null)
+        {
+            ele.m_gridId = gridIndex;
+        }
+        for (int i = 0; i < node.childCount; i++)
+        {
+            Transform child = node.GetChild(i);
+            DoRewrite_GridId(child, gridIndex);
+        }
+    }
+
+    public static void Rewrite_GridId()
+    {
+        GameObject go = Selection.activeGameObject;
+        if (go.name != "GridGroup")
+        {
+            Debug.LogError("请选中GridGroup，在点击本按钮");
+            return;
+        }
+        Transform tf = go.transform;
+        for (int i = 0; i < tf.childCount; i++)
+        {
+            DoRewrite_GridId(tf.GetChild(i), i);
+        }
+    }
+
+    private static int index = 5;
+    private static int id = 1000;
+    public static void ChangeToWideTilePro()
+    {
+        GameObject[] gos = Selection.gameObjects;
+        foreach (GameObject go in gos)
+        {
+            BaseElement ele = go.GetComponent<BaseElement>();
+            if (ele)
+            {
+                int gridId = ele.m_gridId;
+                int pointX = ele.point.m_x;
+                int pointY = ele.point.m_y;
+                GameObject.DestroyImmediate(ele);
+
+                BoxCollider bc = go.GetComponent<BoxCollider>();
+
+                WideTilePro wildTile = go.AddComponent<WideTilePro>();
+                wildTile.m_id = 708;
+                wildTile.m_gridId = gridId;
+                wildTile.point.m_x = pointX;
+                wildTile.point.m_y = pointY;
+                wildTile.data.Width = bc.size.x;
+                wildTile.data.Height = bc.size.z;
+                wildTile.data.BeginDistance = -(Mathf.FloorToInt(bc.size.z / 2));
+                wildTile.data.ResetDistance = (Mathf.FloorToInt(bc.size.z / 2));
+                wildTile.data.IfCheckMissTile = true;
+                wildTile.data.MissTiles = new string[0];
+                go.name = "Waltz_Tile_Empty1x1_" + index + "_" + id;
+                id++;
+            }
+        }
+    }
+
+    private static void DoCheckPosNotEqualPoint(GameObject go)
+    {
+        Transform tf = go.transform;
+        BaseElement ele = go.GetComponent<BaseElement>();
+        if (go.activeSelf && ele)
+        {
+            if (ele.point.m_x != Mathf.FloorToInt(tf.localPosition.x))
+            {
+                Debug.Log(go.name + " localPosition.x not equal BaseElement.point.x");
+            }
+            if (ele.point.m_y != Mathf.FloorToInt(tf.localPosition.z))
+            {
+                Debug.Log(go.name + " localPosition.z not equal BaseElement.point.y");
+            }
+        }
+
+        for (int i = 0; i < tf.childCount; i++)
+        {
+            DoCheckPosNotEqualPoint(tf.GetChild(i).gameObject);
+        }
+    }
+
+    public static void CheckPosZNotEqualPointY()
+    {
+        GameObject[] gos = Selection.gameObjects;
+        foreach (GameObject go in gos)
+        {
+            DoCheckPosNotEqualPoint(go);
+        }
+    }
+
+    public static void ChangeMoveAllDirTieNewStar()
+    {
+        GameObject[] gos = Selection.gameObjects;
+        foreach (GameObject go in gos)
+        {
+            Transform tf = go.transform;
+            Transform modelTf = tf.Find("model");
+            if (modelTf != null)
+            {
+                modelTf.localScale = new Vector3(0.0001f, 0.0001f, 0.0001f);
+                modelTf.localEulerAngles = new Vector3(-90, -45, 0);
+            }
+        }
+    }
+
+    public static void ChangeAnimEnemyToMoveAllDirTileNew()
+    {
+        GameObject[] gos = Selection.gameObjects;
+        foreach (GameObject go in gos)
+        {
+            Transform tf = go.transform;
+            AnimEnemy c1 = tf.GetComponent<AnimEnemy>();
+            if (c1 == null)
+            {
+                continue;
+            }
+            Transform modelTf = tf.Find("model");
+            if (modelTf != null)
+            {
+                modelTf.localScale = new Vector3(0.0001f, 0.0001f, 0.0001f);
+                modelTf.localEulerAngles = new Vector3(-90, -45, 0);
+            }
+
+            MoveAllDirTileNew c2 = go.AddComponent<MoveAllDirTileNew>();
+            c2.m_id = 1401;
+            c2.m_gridId = c1.m_gridId;
+            c2.point.m_x = c1.point.m_x;
+            c2.point.m_y = c1.point.m_y;
+            // c2.data.MoveDirection = TileDirection.Right;
+            // c2.data.MoveDistance = 
+            c2.data.SpeedScaler = 0.5f;
+            c2.data.BeginDistance2 = 7;
+
+            GameObject.DestroyImmediate(c1);
+        }
+    }
 }

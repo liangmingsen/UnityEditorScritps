@@ -5,6 +5,416 @@ using User.TileMap;
 
 public class CombineColliderUtil : CombineBase
 {
+    #region 通用
+
+    /// <summary>
+    /// 检查，指定脚本，与Boxcollider，与对象数量 是否相等。
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="tfs"></param>
+    /// <param name="tileList"></param>
+    /// <param name="colList"></param>
+    /// <returns></returns>
+    public static bool CheckComponentCounts<T>(Transform[] tfs, out List<T> tileList, out List<BoxCollider> colList)
+    {
+        tileList = new List<T>();
+        colList = new List<BoxCollider>();
+        foreach (Transform t in tfs)
+        {
+            T tile = t.GetComponent<T>();
+            if (tile != null)
+            {
+                tileList.Add(tile);
+            }
+            BoxCollider bc = t.GetComponent<BoxCollider>();
+            if (bc != null)
+            {
+                colList.Add(bc);
+            }
+        }
+        if (tileList.Count != tfs.Length || colList.Count != tfs.Length)
+        {
+            Debug.LogError("脚本/碰撞器数量不对");
+            return false;
+        }
+        return true;
+    }
+    /// <summary>
+    /// 检查，对象的 Transform posY, rot, scale==1 是否一致。
+    /// </summary>
+    /// <param name="tfs"></param>
+    /// <returns></returns>
+    public static bool CheckTransform_posY_rot_scale(Transform[] tfs)
+    {
+        foreach (Transform t in tfs)
+        {
+            if (t.localPosition.y != tfs[0].transform.localPosition.y)
+            {
+                Debug.LogError("位置 参数不一致");
+                return false;
+            }
+            if (t.localRotation != tfs[0].transform.localRotation)
+            {
+                Debug.LogError("旋转 参数不一致");
+                return false;
+            }
+            if (t.localScale != Vector3.one)//非一缩放，计算易出问题
+            {
+                Debug.LogError("缩放 参数不一致");
+                return false;
+            }
+        }
+        return true;
+    }
+    /// <summary>
+    /// 检查，对象的 BoxCollider center, size.z.y 是否一致。
+    /// </summary>
+    /// <param name="bcs"></param>
+    /// <returns></returns>
+    public static bool CheckBoxcollider_Center_SizeZY_(List<BoxCollider> bcs)
+    {
+        Vector3 center = bcs[0].center;
+        Vector3 size = bcs[0].size;
+        foreach (BoxCollider bc in bcs)
+        {
+            if (bc.center != center || bc.size.z != size.z || bc.size.y != size.y)
+            {
+                Debug.LogError("BoxCollider 参数不一致");
+                return false;
+            }
+        }
+        return true;
+    }
+    /// <summary>
+    /// 检查，对象的 BaseElement, id 是否一致。
+    /// </summary>
+    /// <param name="tiles"></param>
+    /// <returns></returns>
+    public static bool CheckBaseElement_tileId(List<BaseElement> tiles)
+    {
+        foreach (BaseElement tile in tiles)
+        {
+            if (tile.m_gridId != tiles[0].m_gridId)
+            {
+                Debug.LogError("脚本参数不一致");
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    public static void CalculateMulti_Xx1_WideTileProToBlockSize(Transform[] tfs, List<BoxCollider> colliderList, ref Vector3 pos, ref Vector3 size)
+    {
+        Vector3 minPos = tfs[0].localPosition;
+        Vector3 maxPos = tfs[0].localPosition;
+        Vector3 minSize = colliderList[0].size;
+        Vector3 maxSize = colliderList[0].size;
+
+        int length = tfs.Length;
+        for (int i = 0; i < length; i++)
+        {
+            Transform t = tfs[i];
+            BoxCollider bc = colliderList[i];
+
+            float rx = t.localPosition.x - bc.size.x * 0.5f;
+            float ax = t.localPosition.x + bc.size.x * 0.5f;
+
+            if (i == 0)
+            {
+                minPos = t.localPosition;
+                maxPos = t.localPosition;
+                minPos.x = rx;
+                maxPos.x = ax;
+
+                minSize = bc.size;
+                maxSize = bc.size;
+                minSize.x = rx;
+                maxSize.x = ax;
+            }
+            else
+            {
+                minPos.x = Mathf.Min(minPos.x, rx);
+                minPos.z = Mathf.Min(minPos.z, t.localPosition.z);
+                maxPos.x = Mathf.Max(maxPos.x, ax);
+                maxPos.z = Mathf.Max(maxPos.z, t.localPosition.z);
+
+                minSize.x = Mathf.Min(minSize.x, rx);
+                maxSize.x = Mathf.Max(maxSize.x, ax);
+            }
+        }
+        float newGoPosX = minPos.x + (maxPos.x - minPos.x) * 0.5f;
+        float newGoPosZ = minPos.z + (maxPos.z - minPos.z) * 0.5f;
+
+        float sizeX = (maxSize.x - minSize.x);
+        float sizeZ = size.z * tfs.Length;
+
+        pos = new Vector3(newGoPosX, tfs[0].transform.localPosition.y, newGoPosZ);
+        size = new Vector3(sizeX, colliderList[0].size.y, sizeZ);
+    }
+
+
+    /// <summary>
+    /// 把多个1*1标准单位的 xxxTile 合成一个大的 WideTilePro 。
+    /// 返回新对象
+    /// </summary>
+    /// <param name="source"></param>
+    public static GameObject CombineMulti_1x1_WideTileProToBlock(Transform source, Vector3 newPos, Vector3 blockSize, string wideTileProName, int wideTileProId)
+    {
+        BaseElement sourceTile = source.GetComponent<BaseElement>();
+        BoxCollider sourceBC = source.GetComponent<BoxCollider>();
+        if (sourceTile == null || sourceBC == null)
+        {
+            return null;
+        }
+        string newName = wideTileProName + GetSubstringNewName(source.name);
+
+        GameObject newGo = new GameObject(newName + "_block");
+        newGo.transform.localPosition = newPos;
+        newGo.transform.localRotation = source.localRotation;
+        newGo.transform.localScale = source.localScale;
+        newGo.transform.SetParent(source.parent, false);
+
+        BoxCollider newBC = newGo.AddComponent<BoxCollider>();
+        newBC.isTrigger = true;
+        newBC.center = sourceBC.center;
+        newBC.size = blockSize;
+
+        WideTilePro newTile = newGo.AddComponent<WideTilePro>();
+        newTile.m_gridId = wideTileProId;
+        newTile.m_id = sourceTile.m_id;
+        newTile.data.Width = blockSize.x;
+        newTile.data.Height = blockSize.z;
+        newTile.data.BeginDistance = -(blockSize.z / 2);
+        newTile.data.ResetDistance = (blockSize.z / 2);
+        newTile.data.IfCheckMissTile = true;
+        SetTilePoint(newTile, newGo.transform);
+
+        return newGo;
+    }
+
+    /// <summary>
+    /// 把多个非1*1标准单位的 xxxTile 合成一个大的 WideTilePro 。
+    /// 返回新对象
+    /// </summary>
+    /// <param name="source"></param>
+    public static GameObject CombineMulti_Xx1_WideTileProToBlock(Transform source, Vector3 newPos, Vector3 blockSize, string wideTileProName, int wideTileProId)
+    {
+        BaseElement sourceTile = source.GetComponent<BaseElement>();
+        BoxCollider sourceBC = source.GetComponent<BoxCollider>();
+        if (sourceTile == null || sourceBC == null)
+        {
+            return null;
+        }
+        string newName = wideTileProName + GetSubstringNewName(source.name);
+
+        GameObject newGo = new GameObject(newName + "_block");
+        newGo.transform.localPosition = newPos;
+        newGo.transform.localRotation = source.localRotation;
+        newGo.transform.localScale = source.localScale;
+        newGo.transform.SetParent(source.parent, false);
+
+        BoxCollider newBC = newGo.AddComponent<BoxCollider>();
+        newBC.isTrigger = true;
+        newBC.center = sourceBC.center;
+        newBC.size = blockSize;
+
+        WideTilePro newTile = newGo.AddComponent<WideTilePro>();
+        newTile.m_gridId = sourceTile.m_gridId;
+        newTile.m_id = wideTileProId;
+        newTile.data.Width = blockSize.x;
+        newTile.data.Height = blockSize.z;
+        newTile.data.BeginDistance = -(blockSize.z / 2);
+        newTile.data.ResetDistance = (blockSize.z / 2);
+        newTile.data.IfCheckMissTile = true;
+        SetTilePoint(newTile, newGo.transform);
+
+        return newGo;
+    }
+
+    public static void CombineMulti_Xx1_WideTileProToBlockSetDataTileList(Transform[] sources, GameObject wideTileProGo)
+    {
+        WideTilePro tile = wideTileProGo.GetComponent<WideTilePro>();
+        if(tile != null)
+        {
+            List<string> missList = new List<string>();
+            foreach (Transform t in sources)
+            {
+                string sd = string.Empty;
+                string lx = (t.localPosition.x * 10000).ToString("0.0000000000");
+                string lz = (t.localPosition.z * 10000).ToString("0.0000000000");
+                string sx = (t.GetComponent<BoxCollider>().size.x * 10000).ToString("0.0000000000");
+                string sz = (t.GetComponent<BoxCollider>().size.z * 10000).ToString("0.0000000000");
+
+                lx = lx.Substring(0, lx.IndexOf('.'));
+                lz = lz.Substring(0, lz.IndexOf('.'));
+                sx = sx.Substring(0, sx.IndexOf('.'));
+                sz = sz.Substring(0, sz.IndexOf('.'));
+
+                sd = string.Format("{0},{1},{2},{3}", lx, lz, sx, sz);
+                missList.Add(sd);
+            }
+            tile.data.MissTiles = missList.ToArray();
+        }
+    }
+
+
+    /// <summary>
+    /// 新创建一个GameObject、
+    /// 添加脚本WideTilePro。指定名字+原名字的最后_后缀，和id。 gridId由原目标复制。得新获得Point位置。
+    /// 复制原Boxcollider到新对象上。  //"WideTilePro(Clone)"
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="tileGoName"></param>
+    /// <param name="tileId"></param>
+    /// <returns></returns>
+    public static GameObject CreateGameobjectWideTileProAndCollider(Transform source, string tileGoName, int tileId)
+    {
+        BaseElement sourceTile = source.GetComponent<BaseElement>();
+        string newName = tileGoName + GetSubstringNewName(source.name);
+
+        GameObject newGo = new GameObject();
+        newGo.transform.localPosition = source.localPosition;
+        newGo.transform.localRotation = source.localRotation;
+        newGo.transform.localScale = source.localScale;
+        newGo.name = newName;
+        newGo.transform.SetParent(source.parent, false);
+
+        CopyComponent<BoxCollider>(source, newGo.transform);
+
+        WideTilePro tile = newGo.AddComponent<WideTilePro>();
+        tile.m_gridId = sourceTile.m_gridId;
+        tile.m_id = tileId;
+
+        SetTilePoint(tile, newGo.transform);
+
+        return newGo;
+    }
+    /// <summary>
+    /// 新创建一个GameObject、
+    /// 添加脚本 NormalTile 。指定名字+原名字的最后_后缀，和id。 gridId由原目标复制。得新获得Point位置。
+    /// 复制原Boxcollider到新对象上。
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="tileGoName"></param>
+    /// <param name="tileId"></param>
+    /// <returns></returns>
+    public static GameObject CreateNewGameobjectNormalTileAndCollider(Transform source, string tileGoName, int tileId)
+    {
+        BaseElement sourceTile = source.GetComponent<BaseElement>();
+        string sourceName = source.name.Substring(source.name.LastIndexOf("_"));
+        string newName = tileGoName + sourceName;
+
+        GameObject newGo = new GameObject();
+        newGo.transform.localPosition = source.localPosition;
+        newGo.transform.localRotation = source.localRotation;
+        newGo.transform.localScale = source.localScale;
+        newGo.name = newName;
+        newGo.transform.SetParent(source.parent, false);
+
+        CopyComponent<BoxCollider>(source, newGo.transform);
+
+        NormalTile tile = newGo.AddComponent<NormalTile>();
+        tile.m_gridId = sourceTile.m_gridId;
+        tile.m_id = tileId;
+
+        SetTilePoint(tile, newGo.transform);
+
+        return newGo;
+    }
+    
+    
+    /// <summary>
+    /// 删除目标的 BaseElement 脚本 及 BoxCollider
+    /// </summary>
+    /// <param name="source"></param>
+    public static void RemoveTileAndCollider(Transform source)
+    {
+        BaseElement sourceTile = source.GetComponent<BaseElement>();
+        BoxCollider sourceBC = source.GetComponent<BoxCollider>();
+
+        if(sourceTile != null)
+            DestroyComponent(sourceTile);
+
+        if(sourceBC != null)
+            DestroyComponent(sourceBC);
+    }
+    /// <summary>
+    /// 删除目标的  BoxCollider
+    /// </summary>
+    /// <param name="source"></param>
+    public static void RemoveCollider(Transform source)
+    {
+        BoxCollider sourceBC = source.GetComponent<BoxCollider>();
+        if(sourceBC != null)
+        {
+            DestroyComponent(sourceBC);
+        }
+    }
+
+    public static List<Transform> tagDestroyGos = new List<Transform>();
+    /// <summary>
+    /// 添加要删除的对象
+    /// </summary>
+    /// <param name="tfs"></param>
+    public static void BeginTagDestroyGameobject(Transform[] tfs)
+    {
+        tagDestroyGos.AddRange(tfs);
+    }
+    /// <summary>
+    /// 删除标记的对象
+    /// </summary>
+    public static void EndDestroyTagGameobject()
+    {
+        if(tagDestroyGos != null)
+        {
+            int length = tagDestroyGos.Count;
+            for (int i = 0; i < length; i++)
+            {
+                Transform t = tagDestroyGos[i];
+
+                bool a = t.childCount == 0;
+                bool b = t.GetComponent<MeshFilter>() == null;
+                if(a && b)
+                {
+                    DestroyGameObject(t.gameObject);
+                }
+                else
+                {
+                    BoxCollider bc = t.GetComponent<BoxCollider>();
+                    if(bc != null)
+                    {
+                        DestroyComponent(bc);
+                    }
+                }
+            }
+        }
+        tagDestroyGos = new List<Transform>();
+    }
+
+    /// <summary>
+    /// 取最后'_'之后的字符串。
+    /// 如果没有'_'，则随机一个数字串。
+    /// </summary>
+    /// <param name="tfName"></param>
+    /// <returns></returns>
+    public static string GetSubstringNewName(string tfName)
+    {
+        string newName = "";
+        if (tfName.Contains("_"))
+        {
+            string sourceName = tfName.Substring(tfName.LastIndexOf("_"));
+            newName = sourceName;
+        }
+        else
+        {
+            newName =  "_" + Mathf.FloorToInt(Random.Range(1000, 2000));
+        }
+        return newName;
+    }
+
+    #endregion
+
 
     #region AnimEnemy 改  MoveAllDirTileNew
     private static List<Transform> _parents = null;

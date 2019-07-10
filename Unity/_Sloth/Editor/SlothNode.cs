@@ -32,6 +32,7 @@ public partial class Sloth : Editor
                 strPath = parent.transform.name + "#" + strPath;
                 parent = parent.transform.parent;
             }
+            strPath = string.Format("needDel.push(NodeUtils.getNode(s, \"{0}\"));", strPath);
             sr.WriteLine(strPath);
         }
         sr.Close();
@@ -62,9 +63,9 @@ public partial class Sloth : Editor
     {
         int count = 0;
         List<GameObject> mcGo = new List<GameObject>();
-        List <GameObject> list = SceneUtil.GetActiveSceneAllGO();
+        List<GameObject> list = SceneUtil.GetActiveSceneAllGO();
         if (list != null)
-        {   
+        {
             foreach (GameObject item in list)
             {
                 if (item.GetComponent<MeshCollider>())

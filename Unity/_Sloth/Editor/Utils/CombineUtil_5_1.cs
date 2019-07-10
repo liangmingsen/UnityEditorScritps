@@ -498,7 +498,9 @@ public class CombineUtil_5_1 : CombineColliderUtil
                 bool e = CheckLocalRotationIsZero(collider);
                 bool f = CheckLocalScaleIsOne(collider);
 
-                if (model != null && collider != null && d && e && f)
+                bool d2 = CheckTargetComponentCount<AudioSource>(model, 2);
+
+                if (d2 && collider != null && d && e && f)
                 {
                     CopyComponent<AudioSource>(model, t);
                     DestroyGameObject(model.gameObject);
@@ -926,7 +928,7 @@ public class CombineUtil_5_1 : CombineColliderUtil
     {
         List<MoveAllDirTile> tileList = null;
         List<BoxCollider> colList = null;
-        if (CombineUtil_4_1.CheckComponents<MoveAllDirTile>(tfs, out tileList, out colList))
+        if (CombineUtil_4_1.CheckComponentCounts<MoveAllDirTile>(tfs, out tileList, out colList))
         {
             Transform child = tfs[0];
             BoxCollider cbc = child.GetComponent<BoxCollider>();
@@ -1005,7 +1007,7 @@ public class CombineUtil_5_1 : CombineColliderUtil
     {
         List<NormalTile> tileList = null;
         List<BoxCollider> colList = null;
-        if (CombineUtil_4_1.CheckComponents<NormalTile>(tfs, out tileList, out colList))
+        if (CombineUtil_4_1.CheckComponentCounts<NormalTile>(tfs, out tileList, out colList))
         {
             Transform child = tfs[0];
             BoxCollider cbc = child.GetComponent<BoxCollider>();

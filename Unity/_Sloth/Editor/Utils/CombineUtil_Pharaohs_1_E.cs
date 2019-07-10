@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class CombineUtil_4_1 : CombineColliderUtil
+public class CombineUtil_Pharaohs_1_E : CombineColliderUtil
 {
 
     #region 节点优化

@@ -13,7 +13,7 @@ public class CombineUtil_6_1 : CombineColliderUtil
     //WinBeforeFinishTrigger
     public static void Combine_WinBeforeFinishTrigger(Transform[] tfs)
     {
-        Combine_DestroyModel_CopyCollider_Count_3<WinBeforeFinishTrigger>(tfs, new Vector3(0, 1.5f, 0));
+        Combine_DestroyModel_CopyCollider_Count_3<WinBeforeFinishTrigger>(tfs, new Vector3(0, 0, 0));
     }
     //DisableInputTrigger
     public static void Combine_DisableInputTrigger(Transform[] tfs)
@@ -525,133 +525,6 @@ public class CombineUtil_6_1 : CombineColliderUtil
     }
 
 
-    #region public combine
-
-    public static void Combine_destory_model<T>(Transform[] tfs) where T : BaseElement
-    {
-        foreach (Transform t in tfs)
-        {
-            bool a = CheckChildFoNames(t, new string[] { "model", "collider" });
-            bool b = CheckTargetComponentAndChildsCount<T>(t, 3);
-            if (b)
-            {
-                Transform model = t.Find("model");
-                bool c = CheckTargetComponentAndChildsCount<Transform>(model, 1);
-                bool d = CheckTargetComponentCount<Transform>(model, 1);
-
-                if (c && d)
-                {
-                    DestroyGameObject(model.gameObject);
-                    continue;
-                }
-            }
-            Debug.LogError("条件不满足: " + t.name);
-        }
-        DebugLog();
-    }
-    public static void Combine_DestroyModel_CopyCollider_Count_3<T>(Transform[] tfs, Vector3 colPos) where T : BaseElement
-    {
-        foreach (Transform t in tfs)
-        {
-            bool a = CheckChildFoNames(t, new string[] { "model", "collider" });
-            bool b = CheckTargetComponentAndChildsCount<T>(t, 3);
-            if (b)
-            {
-                Transform model = t.Find("model");
-                Transform collider = t.Find("collider");
-                bool c = CheckTargetComponentAndChildsCount<Transform>(model, 1);
-                bool d = CheckTargetComponentCount<Transform>(model, 1);
-
-                bool d2 = CheckLocalPositionIsZero(collider, colPos);
-                bool e2 = CheckLocalRotationIsZero(collider);
-                bool f2 = CheckLocalScaleIsOne(collider);
-
-                if (c && d && d2 && e2 && f2)
-                {
-                    CopyComponent<BoxCollider>(collider, t);
-
-                    DestroyGameObject(collider.gameObject);
-                    DestroyGameObject(model.gameObject);
-                    continue;
-                }
-            }
-            Debug.LogError("条件不满足: " + t.name);
-        }
-        DebugLog();
-    }
-
-    public static void Combine_CopyCollider<T>(Transform[] tfs) where T : BaseElement
-    {
-        foreach (Transform t in tfs)
-        {
-            bool a = CheckChildFoNames(t, new string[] { "model", "collider" });
-            bool b = CheckTargetComponentAndChildsCount<T>(t, 3);
-            if (b)
-            {
-                Transform collider = t.Find("collider");
-                BoxCollider bc = collider.GetComponent<BoxCollider>();
-
-                bool d2 = CheckLocalPositionIsZero(collider);
-                bool e2 = CheckLocalRotationIsZero(collider);
-                bool f2 = CheckLocalScaleIsOne(collider);
-
-                if (d2 && e2 && f2)
-                {
-                    CopyComponent<BoxCollider>(collider, t);
-
-                    DestroyGameObject(collider.gameObject);
-                    continue;
-                }
-            }
-            Debug.LogError("条件不满足: " + t.name);
-        }
-        DebugLog();
-    }
-    public static void Combine_model_101<T>(Transform[] tfs) where T : BaseElement
-    {
-        foreach (Transform t in tfs)
-        {
-            bool a = CheckChildFoNames(t, new string[] { "model", "collider" });
-            bool b = CheckTargetComponentAndChildsCount<T>(t, 3);
-            if (b)
-            {
-                Transform model = t.Find("model");
-                Transform collider = t.Find("collider");
-                BoxCollider bc = collider.GetComponent<BoxCollider>();
-
-                bool d = CheckLocalPositionIsZero(model, new Vector3(0, -0.05f, 0));
-                bool e = CheckLocalRotationIsZero(model);
-                bool f = CheckLocalScaleIsOne(model, new Vector3(1.01f, 1, 1.01f));
-
-                bool d2 = CheckLocalPositionIsZero(collider);
-                bool e2 = CheckLocalRotationIsZero(collider);
-                bool f2 = CheckLocalScaleIsOne(collider);
-                bool g2 = CheckColliderCenterXZ(bc);
-                bool h2 = CheckColliderSizeXYZ(bc);
-
-                if (d && e && f && d2 && e2 && f2 && g2 && h2)
-                {
-                    CopyComponent<BoxCollider>(collider, t);
-
-                    CopyComponent<MeshFilter>(model, t);
-                    CopyComponent<MeshRenderer>(model, t);
-
-                    DestroyGameObject(collider.gameObject);
-                    DestroyGameObject(model.gameObject);
-
-                    t.GetComponent<BoxCollider>().size = new Vector3(0.99f, 1, 0.99f);
-                    t.GetComponent<BoxCollider>().center = t.GetComponent<BoxCollider>().center - new Vector3(0, -0.05f, 0);
-                    t.localPosition = t.localPosition + new Vector3(0, -0.05f, 0);
-                    t.localScale = new Vector3(1.01f, 1, 1.01f);
-                    continue;
-                }
-            }
-            Debug.LogError("条件不满足: " + t.name);
-        }
-        DebugLog();
-    }
-    #endregion
-
     #endregion
 
     #region 合并网格
@@ -662,11 +535,11 @@ public class CombineUtil_6_1 : CombineColliderUtil
     {
         List<EmissionTile> tileList = null;
         List<BoxCollider> colList = null;
-        if (CombineUtil_4_1.CheckComponents<EmissionTile>(tfs, out tileList, out colList))
+        if (CombineUtil_4_1.CheckComponentCounts<EmissionTile>(tfs, out tileList, out colList))
         {
             foreach (Transform t in tfs)
             {
-                GameObject newGo = CreateNewNormalTile(t);
+                GameObject newGo = CreateNewGameobjectNormalTileAndCollider(t,"Fate_tile_Normal(Clone)", 451);
                 RemoveTileAndCollider(t);
 
                 if(newGo != null)//修正
@@ -677,81 +550,63 @@ public class CombineUtil_6_1 : CombineColliderUtil
             }
         }
     }
-    //MoveAllDirTile 2 NormalTile 
-    public static void Combine_Collider_MoveAllDirTile_2_NormalTile(Transform[] tfs)
+    //MoveAllDirTile 2 WideTilePro 
+    public static void Combine_Collider_MoveAllDirTile_2_WideTilePro_5x1(Transform[] tfs)
     {
         List<MoveAllDirTile> tileList = null;
         List<BoxCollider> colList = null;
-        if (CombineUtil_4_1.CheckComponents<MoveAllDirTile>(tfs, out tileList, out colList))
+        if (CheckComponentCounts<MoveAllDirTile>(tfs, out tileList, out colList))
         {
             foreach (Transform t in tfs)
             {
-                GameObject newGo = CreateNewNormalTile(t);
+                GameObject newGo = CreateGameobjectWideTileProAndCollider(t, "WideTilePro(Clone)", 449);
                 RemoveCollider(t);
-
-                if (newGo != null)//修正
-                {
-                    newGo.transform.localScale = Vector3.one;
-                    newGo.GetComponent<BoxCollider>().size = Vector3.one;
-                }
             }
         }
     }
 
-
-    #region 通用
-
-    public static GameObject CreateNewNormalTile(Transform source)
+    public static void ChangeWideTileProLocalScaleToOne(Transform[] tfs)
     {
-        if(source != null)
+        foreach (Transform t in tfs)
         {
-            BaseElement sourceTile = source.GetComponent<BaseElement>();
-            string sourceName = source.name.Substring(source.name.LastIndexOf("_"));
-            string newName = "Fate_tile_Normal(Clone)" + sourceName;
-
-            GameObject newGo = new GameObject();
-            newGo.transform.localPosition = source.localPosition;
-            newGo.transform.localRotation = source.localRotation;
-            newGo.transform.localScale = source.localScale;
-
-            CopyComponent<BoxCollider>(source, newGo.transform);
-
-            NormalTile tile = newGo.AddComponent<NormalTile>();
-            tile.m_gridId = sourceTile.m_gridId;
-            
-            SetTilePoint(tile, newGo.transform);
-
-            newGo.name = newName;
-            newGo.transform.SetParent(source.parent, false);
-
-            return newGo;
-        }
-        return null;
-    }
-
-    public static void RemoveTileAndCollider(Transform source)
-    {
-        if (source != null)
-        {
-            BaseElement sourceTile = source.GetComponent<BaseElement>();
-            BoxCollider sourceBC = source.GetComponent<BoxCollider>();
-
-            DestroyComponent(sourceTile);
-            DestroyComponent(sourceBC);
+            bool a = t.GetComponentsInChildren<MeshFilter>().Length == 0;
+            bool b = t.localScale == new Vector3(0.5f,1,1);
+            BoxCollider bc = t.GetComponent<BoxCollider>();
+            if(a && b && bc != null)
+            {
+                t.localScale = Vector3.one;
+                bc.size = new Vector3(bc.size.x * 0.5f, bc.size.y, bc.size.z);
+            }
         }
     }
 
-    public static void RemoveCollider(Transform source)
+    /// <summary>
+    /// 生成 不规则 WideTilePro 数据
+    /// </summary>
+    /// <param name="tfs"></param>
+    public static void Combine_block_WideTilePro_Anomaly(Transform[] tfs)
     {
-        if (source != null)
+        List<BaseElement> tileList = null;
+        List<BoxCollider> colList = null;
+
+        bool a = CheckComponentCounts<BaseElement>(tfs, out tileList, out colList);
+        bool b = CheckTransform_posY_rot_scale(tfs);
+        bool c = CheckBoxcollider_Center_SizeZY_(colList);
+        bool d = CheckBaseElement_tileId(tileList);
+
+        if (a && b && c && d)
         {
-            BoxCollider sourceBC = source.GetComponent<BoxCollider>();
+            Vector3 newPos = Vector3.one;
+            Vector3 newSize = Vector3.one;
 
-            DestroyComponent(sourceBC);
+            CalculateMulti_Xx1_WideTileProToBlockSize(tfs, colList, ref newPos, ref newSize);
+            GameObject newGo = CombineMulti_Xx1_WideTileProToBlock(tfs[0], newPos, newSize, "WideTilePro(Clone)", 449);
+            CombineMulti_Xx1_WideTileProToBlockSetDataTileList(tfs, newGo);
+
+            BeginTagDestroyGameobject(tfs);
         }
+        DebugLog();
     }
-
-    #endregion
 
     #endregion
 

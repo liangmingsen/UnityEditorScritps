@@ -3,12 +3,25 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class SlothCheck : Editor {
+public class SlothCheck : Editor
+{
 
     //[MenuItem("Sloth/Particle/Export ActiveScene Particle UnMaterial List")]
     static void ExportActiveSceneParticleListUnMaterial()
     {
         ParticleUtil.ExportActiveSceneParticleListUnMaterial();
+    }
+
+    [MenuItem("Sloth/Particle/Export ActiveScene Particle Material Path")]
+    static void ExportActiveSceneParticleMaterialPath()
+    {
+        ParticleUtil.ExportActiveSceneParticleMaterialPath();
+    }
+
+    [MenuItem("Sloth/Particle/Rewrite ActiveScene Particle Material")]
+    static void RewriteActiveSceneParticleMaterial()
+    {
+        ParticleUtil.RewriteActiveSceneParticleMaterial();
     }
 
     [MenuItem("Sloth/Particle/Export ActiveScene Particle Material List")]
@@ -26,7 +39,7 @@ public class SlothCheck : Editor {
     [MenuItem("Sloth/Particle/Destroy ActiveScene Particle")]
     static void DestroyActiveSceneParticle()
     {
-        if(EditorUtility.DisplayDialog("警告", "是否删除所有粒子特效对象", "确定", "取消"))
+        if (EditorUtility.DisplayDialog("警告", "是否删除所有粒子特效对象", "确定", "取消"))
         {
             ParticleUtil.DestroyActiveSceneParticle();
         }

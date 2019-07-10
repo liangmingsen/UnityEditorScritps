@@ -4,6 +4,8 @@ using System.IO;
 using Umeng;
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.SceneManagement;
+using LitJson;
 
 public class ParticleUtil : MonoBehaviour
 {
@@ -34,7 +36,7 @@ public class ParticleUtil : MonoBehaviour
                 _SetParticleSystemMaterialObject(prs);
             }
         }
-        
+
         StreamWriter sw = FileUtils.GetTempFile();
         Umeng.JSONObject rootJson = new Umeng.JSONObject();
         Umeng.JSONArray ja = new Umeng.JSONArray();
@@ -49,6 +51,142 @@ public class ParticleUtil : MonoBehaviour
         Application.OpenURL(FileUtils.GetTempFilePath());
         Selection.objects = _unMaterialList.ToArray();
         Debug.Log("粒子总数:" + _particleCount + " 没有附材质的粒子数量 :" + _unMaterialList.Count);
+    }
+
+    private static string GetObjPath(GameObject obj)
+    {
+        string strPath = obj.name;
+        Transform parent = obj.transform.parent;
+        while (parent != null)
+        {
+            strPath = parent.transform.name + "#" + strPath;
+            parent = parent.transform.parent;
+        }
+        return strPath;
+    }
+
+    private static string GetSceneParticleMaterialFilePath()
+    {
+        UnityEngine.SceneManagement.Scene s = EditorSceneManager.GetActiveScene();
+        string filePath = Path.Combine(Application.dataPath, s.name + "_ParticleMaterialPath.json");
+        return filePath;
+    }
+
+    class SceneParticleMaterialInfo
+    {
+        public Dictionary<string, List<string>> objMaterailPathInfo = null;
+    }
+
+    public static void ExportActiveSceneParticleMaterialPath()
+    {
+        SceneParticleMaterialInfo inst = new SceneParticleMaterialInfo();
+        Dictionary<string, List<string>> objMaterailPathInfo = new Dictionary<string, List<string>>();
+        List<ParticleSystem> psGo = GetParticleSystemAllGO();
+        foreach (ParticleSystem item in psGo)
+        {
+            ParticleSystemRenderer prs = item.gameObject.GetComponent<Renderer>() as ParticleSystemRenderer;
+            if (prs != null && item.gameObject.activeInHierarchy)
+            {
+                List<string> materialPaths = new List<string>();
+                Material[] sms = prs.sharedMaterials;
+                foreach (Material m in sms)
+                {
+                    if (m != null)
+                    {
+                        string mp = AssetDatabase.GetAssetPath(m);
+                        // Debug.Log(mp);
+                        materialPaths.Add(mp);
+                    }
+                }
+                string objName = GetObjPath(prs.gameObject);
+                objMaterailPathInfo.Add(objName, materialPaths);
+            }
+        }
+
+        // Debug.Log(objMaterailPathInfo.Count);
+
+        // Umeng.JSONObject rootJson = new Umeng.JSONObject();
+        // foreach (KeyValuePair<string, List<string>> item in objMaterailPathInfo)
+        // {
+        //     Umeng.JSONArray ja = new Umeng.JSONArray();
+        //     foreach (string str in item.Value)
+        //     {
+        //         ja.Add(str);
+        //     }
+        //     rootJson.Add(item.Key, ja);
+        // }
+
+        inst.objMaterailPathInfo = objMaterailPathInfo;
+        string jsonStr = JsonMapper.ToJson(inst);
+        // Debug.Log(jsonStr);
+
+        string filePath = GetSceneParticleMaterialFilePath();
+        if (File.Exists(filePath))
+        {
+            File.Delete(filePath);
+        }
+        StreamWriter sw = new StreamWriter(filePath);
+        sw.Write(jsonStr);
+        sw.Close();
+        AssetDatabase.Refresh();
+    }
+
+    public static void RewriteActiveSceneParticleMaterial()
+    {
+        string filePath = GetSceneParticleMaterialFilePath();
+        if (!File.Exists(filePath))
+        {
+            Debug.LogError("cannot find file:" + filePath);
+            return;
+        }
+        StreamReader sr = new StreamReader(filePath);
+        string jsonStr = sr.ReadToEnd();
+        sr.Close();
+
+        SceneParticleMaterialInfo inst = JsonMapper.ToObject<SceneParticleMaterialInfo>(jsonStr);
+        Dictionary<string, List<string>> objMaterailPathInfo = inst.objMaterailPathInfo;
+        // Debug.Log(objMaterailPathInfo.Count);
+
+        GameObject[] gos = Selection.gameObjects;
+        List<ParticleSystem> psGo = GetParticleSystemAllGO();
+        foreach (ParticleSystem item in psGo)
+        // foreach (GameObject obj in gos)
+        {
+            GameObject obj = item.gameObject;
+            ParticleSystemRenderer prs = obj.GetComponent<Renderer>() as ParticleSystemRenderer;
+            if (prs != null && obj.activeInHierarchy)
+            {
+                List<Material> needMaterial = new List<Material>();
+                string objName = GetObjPath(prs.gameObject);
+                List<string> materialPathList;
+                if (objMaterailPathInfo.TryGetValue(objName, out materialPathList))
+                {
+                    foreach (string mp in materialPathList)
+                    {
+                        Material m = AssetDatabase.LoadAssetAtPath<Material>(mp);
+                        if (m != null)
+                        {
+                            needMaterial.Add(m);
+                        }
+                        else
+                        {
+                            Debug.LogError(string.Format("cannot find material! obj:{0} materialPath:{1}", objName, mp));
+                        }
+                    }
+                }
+
+                prs.sharedMaterials = needMaterial.ToArray();
+                // Material sharedMaterial = prs.sharedMaterial;
+                // if (sharedMaterial != null)
+                // {
+                //     string text = LayaExport.DataManager.cleanIllegalChar(AssetDatabase.GetAssetPath(sharedMaterial.GetInstanceID()).Split(new char[]
+                //     {
+                //         '.'
+                //     })[0], false) + ".lmat";
+                //     Debug.Log(text);
+                // }
+            }
+        }
     }
 
     public static void ExportActiveSceneParticleListMaterial()
@@ -76,7 +214,10 @@ public class ParticleUtil : MonoBehaviour
                 ja.Add(FileUtils.GetGameObjectPath(go));
             }
             rootJson.Add(item.Key, ja);
-            keys.Add(item.Key);
+            if (!IsInFilter(item.Key))
+            {
+                keys.Add(item.Key);
+            }
         }
         rootJson.Add("keys", keys);
 
@@ -85,6 +226,21 @@ public class ParticleUtil : MonoBehaviour
         Application.OpenURL(FileUtils.GetTempFilePath());
 
         Debug.Log("粒子总数:" + _particleCount + " 使用了材质的粒子数:" + _materialDict.Count);
+    }
+
+    private static List<string> sFilterMaterialList = new List<string>{
+        //皇冠效果
+        "tx_guangshu_1",
+        "tx_lizi",
+
+        //钻石效果(低端机上只保留glow_031,需要去掉glow_011 和 glow_035)
+		"glow_031",
+        "glow_011",
+        "glow_035",
+    };
+    private static bool IsInFilter(string key)
+    {
+        return sFilterMaterialList.IndexOf(key) >= 0;
     }
 
     public static void ExportActiveSceneParticleListMesh()
@@ -217,16 +373,17 @@ public class ParticleUtil : MonoBehaviour
     {
         string mainNam = "";
         string path = "";
-        Debug.Log(prs.materials + "=====  " + prs.materials.Length);//没有材质，自动加上
+        // Debug.Log(prs.materials + "=====  " + prs.materials.Length);//没有材质，自动加上
         //if (prs.material.name.Contains("Default-Material"))
         //{
         //    _unMaterialList.Add(prs.gameObject);
         //}
         //else
         {
-            if (prs.material != null)
+            Material sharedMaterial = prs.sharedMaterial;
+            if (sharedMaterial != null)
             {
-                if (prs.material.name.Contains("Default-Material"))
+                if (sharedMaterial.name.Contains("Default-Material"))
                 {
                     path = "defaultMaterial";
                     if (!_materialDict.ContainsKey(path))
@@ -237,7 +394,7 @@ public class ParticleUtil : MonoBehaviour
                 }
                 else
                 {
-                    mainNam = prs.material.name;
+                    mainNam = sharedMaterial.name;
                     mainNam = mainNam.Replace("(Instance)", "").TrimEnd();
                     path = mainNam;
                     if (!_materialDict.ContainsKey(path))
@@ -246,7 +403,7 @@ public class ParticleUtil : MonoBehaviour
                     }
                     _materialDict[path].Add(prs.gameObject);
                 }
-                
+
             }
             //if (prs.trailMaterial != null && !prs.trailMaterial.name.Contains("Default-Material"))
             //{
@@ -306,10 +463,10 @@ public class ParticleUtil : MonoBehaviour
             }
             foreach (GameObject item in particleList)
             {
-                if(item != null)
+                if (item != null)
                 {
                     ParticleSystemRenderer prs = item.gameObject.GetComponent<Renderer>() as ParticleSystemRenderer;
-                    if(prs != null && prs.material != null)
+                    if (prs != null && prs.material != null)
                     {
                         if (prs.material.name.Contains("Default-Material") || prs.trailMaterial.name.Contains("Default-Material"))
                         {

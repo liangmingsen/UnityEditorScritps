@@ -151,7 +151,7 @@ public class CombineBase
         {
             DestroyGameObject(needDelBoxCollider[k].gameObject);
         }
-        if (boxColliderChilds.Count > 1)
+        if (boxColliderChilds.Count > 1 || boxColliderChilds.Count == 0)
         {
             //多个collider不处理
             return;
@@ -218,6 +218,229 @@ public class CombineBase
     #endregion
 
     #region public
+
+    public static void Combine_Destroy_Audio_path_11<T>(Transform[] tfs) where T : BaseElement
+    {
+        foreach (Transform t in tfs)
+        {
+            bool a = CheckChildFoNames(t, new string[] { "model", "collider", "audio", "effect" });
+            bool b = CheckTargetComponentAndChildsCount<T>(t, 11);
+            if (a && b)
+            {
+                Transform audio = t.Find("audio");
+
+                bool d6 = CheckTargetComponentCount<AudioSource>(audio, 2);
+                bool e6 = CheckTargetComponentAndChildsCount<Transform>(audio, 1);
+
+                if (d6 && e6)
+                {
+                    CopyComponent<AudioSource>(audio, t);
+
+                    DestroyGameObject(audio.gameObject);
+                    continue;
+                }
+            }
+            Debug.LogError("条件不符:  " + t.name);
+        }
+        DebugLog();
+    }
+
+    public static void Combine_CopyCollider_2<T>(Transform[] tfs, Vector3 collLocalPos) where T : BaseElement
+    {
+        foreach (Transform t in tfs)
+        {
+            bool a = CheckChildFoNames(t, new string[] { "collider" });
+            bool b = CheckTargetComponentAndChildsCount<T>(t, 2);
+            if (a && b)
+            {
+                Transform collider = t.Find("collider");
+                BoxCollider bc = collider.GetComponent<BoxCollider>();
+
+                bool d2 = CheckLocalPositionIsZero(collider, collLocalPos);
+                bool e2 = CheckLocalRotationIsZero(collider);
+                bool f2 = CheckLocalScaleIsOne(collider);
+                bool g2 = CheckColliderCenterXZ(bc);
+
+                if (d2 && e2 && f2 && g2)
+                {
+                    bc.center += collLocalPos;
+                    CopyComponent<BoxCollider>(collider, t);
+                    DestroyGameObject(collider.gameObject);
+                    continue;
+                }
+            }
+            Debug.LogError("条件不符:  " + t.name);
+        }
+        DebugLog();
+    }
+
+    public static void Combine_model_collider_3_zero<T>(Transform[] tfs)where T : BaseElement
+    {
+        foreach (Transform t in tfs)
+        {
+            bool a = CheckChildFoNames(t, new string[] { "model", "collider" });
+            bool b = CheckTargetComponentAndChildsCount<T>(t, 3);
+            if (b)
+            {
+                Transform model = t.Find("model");
+                Transform collider = t.Find("collider");
+                BoxCollider bc = collider.GetComponent<BoxCollider>();
+
+                bool d = CheckLocalPositionIsZero(model);
+                bool e = CheckLocalRotationIsZero(model);
+                bool f = CheckLocalScaleIsOne(model);
+
+                bool d2 = CheckLocalPositionIsZero(collider);
+                bool e2 = CheckLocalRotationIsZero(collider);
+                bool f2 = CheckLocalScaleIsOne(collider);
+                bool g2 = CheckColliderCenterXZ(bc);
+
+                if (d && e && f && d2 && e2 && f2 && g2)
+                {
+                    CopyComponent<BoxCollider>(collider, t);
+
+                    CopyComponent<MeshFilter>(model, t);
+                    CopyComponent<MeshRenderer>(model, t);
+
+                    DestroyGameObject(collider.gameObject);
+                    DestroyGameObject(model.gameObject);
+
+                    continue;
+                }
+            }
+            Debug.LogError("条件不满足: " + t.name);
+        }
+        DebugLog();
+    }
+
+    public static void Combine_destory_model<T>(Transform[] tfs) where T : BaseElement
+    {
+        foreach (Transform t in tfs)
+        {
+            bool a = CheckChildFoNames(t, new string[] { "model", "collider" });
+            bool b = CheckTargetComponentAndChildsCount<T>(t, 3);
+            if (b)
+            {
+                Transform model = t.Find("model");
+                bool c = CheckTargetComponentAndChildsCount<Transform>(model, 1);
+                bool d = CheckTargetComponentCount<Transform>(model, 1);
+
+                if (c && d)
+                {
+                    DestroyGameObject(model.gameObject);
+                    continue;
+                }
+            }
+            Debug.LogError("条件不满足: " + t.name);
+        }
+        DebugLog();
+    }
+    public static void Combine_DestroyModel_CopyCollider_Count_3<T>(Transform[] tfs, Vector3 colLocalPos) where T : BaseElement
+    {
+        foreach (Transform t in tfs)
+        {
+            bool a = CheckChildFoNames(t, new string[] { "model", "collider" });
+            bool b = CheckTargetComponentAndChildsCount<T>(t, 3);
+            if (b)
+            {
+                Transform model = t.Find("model");
+                Transform collider = t.Find("collider");
+                BoxCollider bc = collider.GetComponent<BoxCollider>();
+
+                bool c = CheckTargetComponentAndChildsCount<Transform>(model, 1);
+                bool d = CheckTargetComponentCount<Transform>(model, 1);
+
+                bool d2 = CheckLocalPositionIsZero(collider, colLocalPos);
+                bool e2 = CheckLocalRotationIsZero(collider);
+                bool f2 = CheckLocalScaleIsOne(collider);
+                bool g2 = CheckColliderCenterXZ(bc);
+
+                if (c && d && d2 && e2 && f2 && g2)
+                {
+                    bc.center += colLocalPos;
+                    CopyComponent<BoxCollider>(collider, t);
+
+                    DestroyGameObject(collider.gameObject);
+                    DestroyGameObject(model.gameObject);
+                    continue;
+                }
+            }
+            Debug.LogError("条件不满足: " + t.name);
+        }
+        DebugLog();
+    }
+
+    public static void Combine_CopyCollider<T>(Transform[] tfs) where T : BaseElement
+    {
+        foreach (Transform t in tfs)
+        {
+            bool a = CheckChildFoNames(t, new string[] { "model", "collider" });
+            bool b = CheckTargetComponentAndChildsCount<T>(t, 3);
+            if (b)
+            {
+                Transform collider = t.Find("collider");
+                BoxCollider bc = collider.GetComponent<BoxCollider>();
+
+                bool d2 = CheckLocalPositionIsZero(collider);
+                bool e2 = CheckLocalRotationIsZero(collider);
+                bool f2 = CheckLocalScaleIsOne(collider);
+                bool g2 = CheckColliderCenterXZ(bc);
+
+                if (d2 && e2 && f2 && g2)
+                {
+                    CopyComponent<BoxCollider>(collider, t);
+
+                    DestroyGameObject(collider.gameObject);
+                    continue;
+                }
+            }
+            Debug.LogError("条件不满足: " + t.name);
+        }
+        DebugLog();
+    }
+    public static void Combine_model_101<T>(Transform[] tfs) where T : BaseElement
+    {
+        foreach (Transform t in tfs)
+        {
+            bool a = CheckChildFoNames(t, new string[] { "model", "collider" });
+            bool b = CheckTargetComponentAndChildsCount<T>(t, 3);
+            if (b)
+            {
+                Transform model = t.Find("model");
+                Transform collider = t.Find("collider");
+                BoxCollider bc = collider.GetComponent<BoxCollider>();
+
+                bool d = CheckLocalPositionIsZero(model, new Vector3(0, -0.05f, 0));
+                bool e = CheckLocalRotationIsZero(model);
+                bool f = CheckLocalScaleIsOne(model, new Vector3(1.01f, 1, 1.01f));
+
+                bool d2 = CheckLocalPositionIsZero(collider);
+                bool e2 = CheckLocalRotationIsZero(collider);
+                bool f2 = CheckLocalScaleIsOne(collider);
+                bool g2 = CheckColliderCenterXZ(bc);
+                bool h2 = CheckColliderSizeXYZ(bc);
+
+                if (d && e && f && d2 && e2 && f2 && g2 && h2)
+                {
+                    CopyComponent<BoxCollider>(collider, t);
+
+                    CopyComponent<MeshFilter>(model, t);
+                    CopyComponent<MeshRenderer>(model, t);
+
+                    DestroyGameObject(collider.gameObject);
+                    DestroyGameObject(model.gameObject);
+
+                    t.GetComponent<BoxCollider>().size = new Vector3(0.99f, 1, 0.99f);
+                    t.GetComponent<BoxCollider>().center = t.GetComponent<BoxCollider>().center - new Vector3(0, -0.05f, 0);
+                    t.localPosition = t.localPosition + new Vector3(0, -0.05f, 0);
+                    t.localScale = new Vector3(1.01f, 1, 1.01f);
+                    continue;
+                }
+            }
+            Debug.LogError("条件不满足: " + t.name);
+        }
+        DebugLog();
+    }
 
     public static void Combine_public_collider_model<T>(Transform[] tfs)where T : BaseElement
     {

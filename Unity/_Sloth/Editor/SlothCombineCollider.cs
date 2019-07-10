@@ -178,18 +178,38 @@ public class SlothCombineCollider : Editor
     }
     //先执行 MoveAllDirTile_move_forward
     //完事后 MoveAllDirTile_move_back
-    [MenuItem("Sloth/CombineCollider/L6/MoveAllDirTile Change NormalTile")]
+    //针对 。x=5 * z=1 长条。
+    [MenuItem("Sloth/CombineCollider/L6/MoveAllDirTile Change WideTilePro 5x1")]
     static void Combine_block_MoveAllDirTile_change_NormalTile_6()
     {
-        CombineUtil_6_1.Combine_Collider_MoveAllDirTile_2_NormalTile(Selection.transforms);
+        CombineUtil_6_1.Combine_Collider_MoveAllDirTile_2_WideTilePro_5x1(Selection.transforms);
     }
 
-    [MenuItem("Sloth/CombineCollider/L6/NormalTile Change WideTipePro")]
-    static void Combine_block_NormalTile_Change_WideTipePro_6()
+    [MenuItem("Sloth/CombineCollider/L6/Change WideTilePro LocalScale To One")]
+    static void ChangeWideTileProLocalScaleToOne()
     {
-        CombineUtil_4_1.Combine_block_NormalTile_Change_WideTipePro(Selection.transforms,"");
+        CombineUtil_6_1.ChangeWideTileProLocalScaleToOne(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCollider/L6/Combine block WideTilePro Anomaly %g")]
+    static void Combine_block_WideTilePro_Anomaly_6()
+    {
+        CombineUtil_6_1.Combine_block_WideTilePro_Anomaly(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCollider/L6/Destroy Tag Gameobject")]
+    static void EndDestroyTagGameobject_6()
+    {
+        CombineUtil_6_1.EndDestroyTagGameobject();
+    }
+
+    [MenuItem("Sloth/CombineCollider/L6/Remove Tag Gameobject")]
+    static void RemoveTagGameobject_6()
+    {
+        CombineUtil_6_1.tagDestroyGos = new List<Transform>();
     }
 
     #endregion
+
 
 }
