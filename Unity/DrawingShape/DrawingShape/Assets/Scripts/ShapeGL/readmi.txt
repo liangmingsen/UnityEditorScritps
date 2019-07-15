@@ -1,0 +1,43 @@
+﻿
+Unity中画图形主要有4种方式。
+
+1:Debug.Draw.
+2:Gizmos.Draw.
+3:Graphic.DrawMesh.
+4:GL
+
+总纲
+
+只需在Scene窗口显示的调试图像：(1,2)
+
+	一直显示的 ：OnDrawGizmos + Gizmos.Draw.
+	选中显示的：OnDrawGizmosSelected + Gizmos.Draw.
+	脚本控制的：Update + Debug.Draw.
+
+需要在实际设备屏幕显示的调试图像。(3,4)
+
+	Update + Graphic.DrawMesh.
+	OnRenderObject + GL.
+
+详细
+
+1：Debug.Draw
+	一般在Update/Fixed Update / LateUpdate 里调用。
+	只在Scene窗口里显示。
+	不能设置材质。
+
+2：Gizmos.Draw
+	在OnDrawGizmos / OnDrawGizmosSelected 里调用。
+	只在Scene窗口里显示。
+	不能设置材质。
+
+3：Graphic.DrawMesh
+	一般在Update/Fixed Update / LateUpdate 里调用。
+	实际屏幕和Scene窗口都能显示。
+	可以设置材质。
+
+4：GL
+	一般在物体的OnRenderObject或者相机的OnPostRender里调用 。
+	实际屏幕和Scene窗口都能显示。
+	可以设置材质。
+	一个GL.Begin / GL.End 里的渲染是自动合并的，一般是一个DC。
