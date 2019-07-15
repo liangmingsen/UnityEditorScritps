@@ -375,6 +375,37 @@ public class SlothCombineCheck : Editor
         CombineUtil_3.Combine_Award_Diamond();
     }
 
+    [MenuItem("Sloth/CombineCheck/level3/Combine_FreeMoveTile_6")] 
+    static void Combine_FreeMoveTile_6()
+    {
+        CombineUtil_3_1.Combine_FreeMoveTile_6(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/level3/Combine_FreeMoveTile_9")]
+    static void Combine_FreeMoveTile_9()
+    {
+        CombineUtil_3_1.Combine_FreeMoveTile_9(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/level3/Combine AnimEnemyPro triggerPoint")]
+    static void Combine_AnimEnemyPro_triggerPoint()
+    {
+        CombineUtil_3_1.Combine_AnimEnemyPro_triggerPoint(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCheck/level3/Combine MultiSegmentAnimationTile")]
+    static void Combine_MultiSegmentAnimationTile()
+    {
+        CombineUtil_3_1.Combine_MultiSegmentAnimationTile(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/level3/Combine HorizonMoveTile")]
+    static void Combine_HorizonMoveTile()
+    {
+        CombineUtil_3_1.Combine_HorizonMoveTile(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/level3/Combine JumpDistanceTrigger")]
+    static void Combine_JumpDistanceTrigger_3()
+    {
+        CombineUtil_3_1.Combine_JumpDistanceTrigger(Selection.transforms);
+    }
     #endregion
 
     #region level 4
@@ -927,4 +958,604 @@ public class SlothCombineCheck : Editor
         CombineUtil_6_1.Combine_HangingWinTile(Selection.transforms);
     }
     #endregion
+
+    #region Waltz_1_E
+    [MenuItem("Sloth/CombineCheck/Waltz_1_E/Combine NormalTile Check")]
+    static void Combine_NormalTile_Check()
+    {
+        CombineUtil_Waltz_1_E.Combine_NormalTile_Check(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCheck/Waltz_1_E/Combine NormalTile ChangeMesh")]
+    static void Combine_NormalTile_ChangeMesh()
+    {
+        CombineUtil_Waltz_1_E.Combine_NormalTile_ChangeMesh(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCheck/Waltz_1_E/Combine NormalTile")]
+    static void Combine_NormalTile_Waltz_1_E()
+    {
+        CombineUtil_Waltz_1_E.Combine_NormalTile(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCheck/Waltz_1_E/Combine AnimEnemyPro Del TriggerPoint")]
+    static void Combine_AnimEnemyPro_Del_TriggerPoint()
+    {
+        CombineUtil_Waltz_1_E.Combine_AnimEnemyPro_Del_TriggerPoint(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCheck/Waltz_1_E/Combine AnimEnemyPro Waltz_Enemy_Jiguang")]
+    static void Combine_AnimEnemyPro_Waltz_Enemy_Jiguang()
+    {
+        CombineUtil_Waltz_1_E.Combine_AnimEnemyPro_Waltz_Enemy_Jiguang(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCheck/Waltz_1_E/Combine WideTilePro")]
+    static void Combine_WideTilePro_Waltz_1_E()
+    {
+        CombineUtil_Waltz_1_E.Combine_WideTilePro(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCheck/Waltz_1_E/Combine FreeCollideTile")]
+    static void Combine_FreeCollideTile_Waltz_1_E()
+    {
+        CombineUtil_Waltz_1_E.Combine_FreeCollideTile(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCheck/Waltz_1_E/Combine JumpDistanceQTETile Waltz_Tile_Piano_SuperJump_empty")]
+    static void Combine_JumpDistanceQTETile_Waltz_Tile_Piano_SuperJump_empty()
+    {
+        CombineUtil_Waltz_1_E.Combine_JumpDistanceQTETile_Waltz_Tile_Piano_SuperJump_empty(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCheck/Waltz_1_E/Combine JumpDistanceQTETile Waltz_Tile_paper_jump ChangeMesh")]
+    static void Combine_JumpDistanceQTETile_Waltz_Tile_paper_jump_ChangeMesh()
+    {
+        CombineUtil_Waltz_1_E.Combine_JumpDistanceQTETile_Waltz_Tile_paper_jump_ChangeMesh(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCheck/Waltz_1_E/Combine JumpDistanceQTETile Waltz_Tile_paper_jump")]
+    static void Combine_JumpDistanceQTETile_Waltz_Tile_paper_jump()
+    {
+        CombineUtil_Waltz_1_E.Combine_JumpDistanceQTETile_Waltz_Tile_paper_jump(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCheck/Waltz_1_E/Combine TwoEffectTriggerPro Waltz_Effect_Jump")]
+    static void Combine_TwoEffectTriggerPro_Waltz_Effect_Jump()
+    {
+        CombineUtil_Waltz_1_E.Combine_TwoEffectTriggerPro_Waltz_Effect_Jump(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCheck/Waltz_1_E/Combine TwoEffectTriggerPro Waltz_Effect_Crown")]
+    static void Combine_TwoEffectTriggerPro_Waltz_Effect_Crown()
+    {
+        CombineUtil_Waltz_1_E.Combine_TwoEffectTriggerPro_Waltz_Effect_Crown(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCheck/Waltz_1_E/Combine TwoEffectTriggerPro Waltz_Effect_Jump_Big")]
+    static void Combine_TwoEffectTriggerPro_Waltz_Effect_Jump_Big()
+    {
+        CombineUtil_Waltz_1_E.Combine_TwoEffectTriggerPro_Waltz_Effect_Jump(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCheck/Waltz_1_E/Combine WaltzStringLaser")]
+    static void Combine_WaltzStringLaser()
+    {
+        CombineUtil_Waltz_1_E.Combine_WaltzStringLaser(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCheck/Waltz_1_E/Combine ChangeRuntimeAnimatorControllerTrigger")]
+    static void Combine_ChangeRuntimeAnimatorControllerTrigger()
+    {
+        CombineUtil_Waltz_1_E.Combine_ChangeRuntimeAnimatorControllerTrigger(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCheck/Waltz_1_E/Combine NormalEnemy")]
+    static void Combine_NormalEnemy_Waltz_1()
+    {
+        CombineUtil_Waltz_1_E.Combine_NormalEnemy(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCheck/Waltz_1_E/Combine CurvedBendBoxTrigger")]
+    static void Combine_CurvedBendBoxTrigger_Waltz_1()
+    {
+        CombineUtil_Waltz_1_E.Combine_CurvedBendBoxTrigger(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCheck/Waltz_1_E/Combine DropDieTrigger")]
+    static void Combine_DropDieTrigger_Waltz_1()
+    {
+        CombineUtil_Waltz_1_E.Combine_DropDieTrigger(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCheck/Waltz_1_E/Combine CameraAnimTrigger")]
+    static void Combine_CameraAnimTrigger_Waltz_1()
+    {
+        CombineUtil_Waltz_1_E.Combine_CameraAnimTrigger(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCheck/Waltz_1_E/Combine ChangeCameraEffectByNameTrigger")]
+    static void Combine_ChangeCameraEffectByNameTrigger_Waltz_1()
+    {
+        CombineUtil_Waltz_1_E.Combine_ChangeCameraEffectByNameTrigger(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCheck/Waltz_1_E/Combine RoleAnimatiorTrigger")]
+    static void Combine_RoleAnimatiorTrigger_Waltz_1()
+    {
+        CombineUtil_Waltz_1_E.Combine_RoleAnimatiorTrigger(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCheck/Waltz_1_E/Combine WorldThemesTrigger")]
+    static void Combine_WorldThemesTrigger_Waltz_1()
+    {
+        CombineUtil_Waltz_1_E.Combine_WorldThemesTrigger(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCheck/Waltz_1_E/Combine ActiveDiamond")]
+    static void Combine_ActiveDiamond()
+    {
+        CombineUtil_Waltz_1_E.Combine_ActiveDiamond(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCheck/Waltz_1_E/Combine BuyOutRebirthBoxTrigger")]
+    static void Combine_BuyOutRebirthBoxTrigger_Waltz_1_E()
+    {
+        CombineUtil_Waltz_1_E.Combine_BuyOutRebirthBoxTrigger(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCheck/Waltz_1_E/Combine DisableInputTrigger")]
+    static void Combine_DisableInputTrigger_Waltz_1_E()
+    {
+        CombineUtil_Waltz_1_E.Combine_DisableInputTrigger(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCheck/Waltz_1_E/Combine PathToMoveByUnpredictableDiamondAwardTrigger")]
+    static void Combine_PathToMoveByUnpredictableDiamondAwardTrigger_Waltz_1_E()
+    {
+        CombineUtil_Waltz_1_E.Combine_PathToMoveByUnpredictableDiamondAwardTrigger(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCheck/Waltz_1_E/Combine CameraLookAtSpeedTrigger")]
+    static void Combine_CameraLookAtSpeedTrigger_Waltz_1_E()
+    {
+        CombineUtil_Waltz_1_E.Combine_CameraLookAtSpeedTrigger(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCheck/Waltz_1_E/Combine CameraBlankTrigger")]
+    static void Combine_CameraBlankTrigger_Waltz_1_E()
+    {
+        CombineUtil_Waltz_1_E.Combine_CameraBlankTrigger(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCheck/Waltz_1_E/Combine EnableInputTrigger")]
+    static void Combine_EnableInputTrigger_Waltz_1_E()
+    {
+        CombineUtil_Waltz_1_E.Combine_EnableInputTrigger(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCheck/Waltz_1_E/Combine PathToMoveByUnpredictableCrownAwardTrigger")]
+    static void Combine_PathToMoveByUnpredictableCrownAwardTrigger()
+    {
+        CombineUtil_Waltz_1_E.Combine_PathToMoveByUnpredictableCrownAwardTrigger(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCheck/Waltz_1_E/Combine DiamondAward")]
+    static void Combine_DiamondAward_Waltz_1_E()
+    {
+        CombineUtil_Waltz_1_E.Combine_DiamondAward(Selection.transforms);
+    }
+
+    #endregion
+
+    #region level Pharaohs_1_E
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine NormalTile")]
+    static void Combine_NormalTile_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_NormalTile(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine MoveAllDirTile")]
+    static void Combine_MoveAllDirTile_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_MoveAllDirTile(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine MoveAllDirTile2")]
+    static void Combine_MoveAllDirTile2_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_MoveAllDirTile2(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine WideTilePro")]
+    static void Combine_WideTilePro_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_WideTilePro(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine FreeCollideTile")]
+    static void Combine_FreeCollideTile_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_FreeCollideTile(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine GlassRootTile")]
+    static void Combine_GlassRootTile_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_GlassRootTile(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine GlassChildTile")]
+    static void Combine_GlassChildTile_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_GlassChildTile(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine NormalJumpTile")]
+    static void Combine_NormalJumpTile_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_NormalJumpTile(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine NormalEnemy AiJi_XiaPo_Zhu(Clone)")]
+    static void Combine_NormalEnemy_AiJi_XiaPo_Zhu_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_NormalEnemy_AiJi_XiaPo_Zhu(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine NormalEnemy Enemy_Enpty(Clone)")]
+    static void Combine_NormalEnemy_Enemy_Enpty_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_NormalEnemy_Enemy_Enpty(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine JumpDistanceQTETile")]
+    static void Combine_JumpDistanceQTETile_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_JumpDistanceQTETile(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine NormalDropEnemy")]
+    static void Combine_NormalDropEnemy_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_NormalDropEnemy(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine RoleAnimatiorTrigger")]
+    static void Combine_RoleAnimatiorTrigger_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_RoleAnimatiorTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine CameraAnimTrigger")]
+    static void Combine_CameraAnimTrigger_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_CameraAnimTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine ShakeCameraTrigger")]
+    static void Combine_ShakeCameraTrigger_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_ShakeCameraTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine CrownFragment")]
+    static void Combine_CrownFragment_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_CrownFragment(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine DiamondAward")]
+    static void Combine_DiamondAward_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_DiamondAward(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine TwoEffectTriggerPro")]
+    static void Combine_TwoEffectTriggerPro_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_TwoEffectTriggerPro(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine FreeCollideAnimTile")]
+    static void Combine_FreeCollideAnimTile_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_FreeCollideAnimTile(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine CycleFBTile")]
+    static void Combine_CycleFBTile_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_CycleFBTile(Selection.transforms);
+    }
+    //[MenuItem("Sloth/CombineCheck/level4/Combine PathToMoveByUnpredictableDiamondAwardTrigger")] // collider不能删除，会影响运行。
+    static void Combine_PathToMoveByUnpredictableDiamondAwardTrigger_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_PathToMoveByUnpredictableDiamondAwardTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine BuyOutRebirthBoxTrigger")]
+    static void Combine_BuyOutRebirthBoxTrigger_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_BuyOutRebirthBoxTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine AnimEnemyPro")]
+    static void Combine_AnimEnemyPro_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_AnimEnemyPro(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine CurvedBendBoxTrigger")]
+    static void Combine_CurvedBendBoxTrigger_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_CurvedBendBoxTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine PathToMoveByRoleTrigger")]
+    static void Combine_PathToMoveByRoleTrigger_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_PathToMoveByRoleTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine InputResetTrigger")]
+    static void Combine_InputResetTrigger_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_InputResetTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine DepartVehicleTrigger")]
+    static void Combine_DepartVehicleTrigger_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_DepartVehicleTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine RoleMoveLimitTrigger")]
+    static void Combine_RoleMoveLimitTrigger_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_RoleMoveLimitTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine ChangeCameraEffectTrigger")]
+    static void Combine_ChangeCameraEffectTrigger_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_ChangeCameraEffectTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine CrownFromFragment")]
+    static void Combine_CrownFromFragment_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_CrownFromFragment(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine DisableInputTrigger")]
+    static void Combine_DisableInputTrigger_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_DisableInputTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine BackGroundTrigger")]
+    static void Combine_BackGroundTrigger_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_BackGroundTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine ChangeRoleTrigger")]
+    static void Combine_ChangeRoleTrigger_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_ChangeRoleTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine EnableInputTrigger")]
+    static void Combine_EnableInputTrigger_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_EnableInputTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine OpenFollowTrigger")]
+    static void Combine_OpenFollowTrigger_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_OpenFollowTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine DropDieStaticTrigger")]
+    static void Combine_DropDieStaticTrigger_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_DropDieStaticTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine HideBackTrigger")]
+    static void Combine_HideBackTrigger_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_HideBackTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine Award_Crown_lv4")]
+    static void Combine_Award_Crown_lv4_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_Award_Crown_lv4(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine WindOpenTrigger")]
+    static void Combine_WindOpenTrigger_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_WindOpenTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine WindCloseTrigger")]
+    static void Combine_WindCloseTrigger_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_WindCloseTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine CloseFollowTrigger")]
+    static void Combine_CloseFollowTrigger_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_CloseFollowTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine WinBeforeFinishTrigger")]
+    static void Combine_WinBeforeFinishTrigger_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_WinBeforeFinishTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Pharaohs_1_E/Combine HangingWinTile")]
+    static void Combine_HangingWinTile_Pharaohs_1_E()
+    {
+        CombineUtil_Pharaohs_1_E.Combine_HangingWinTile(Selection.transforms);
+    }
+    #endregion
+
+    #region Jazz_E
+    [MenuItem("Sloth/CombineCheck/Jazz_E/Combine MultiSegmentAnimationTile 4")]
+    static void Combine_MultiSegmentAnimationTile_4()
+    {
+        CombineUtil_Jazz_E.Combine_MultiSegmentAnimationTile_4(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCheck/Jazz_E/Combine MultiSegmentAnimationTile 5")]
+    static void Combine_MultiSegmentAnimationTile_5()
+    {
+        CombineUtil_Jazz_E.Combine_MultiSegmentAnimationTile_5(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCheck/Jazz_E/Combine MultiSegmentAnimationTile Destroy Collider")]
+    static void Combine_MultiSegmentAnimationTile_Destroy_Collider()
+    {
+        CombineUtil_Jazz_E.Combine_MultiSegmentAnimationTile_Destroy_Collider(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCheck/Jazz_E/Combine AnimEnemyPro Destroy TriggerPoint")]
+    static void Combine_MultiSegmentAnimationTile_Destroy_TriggerPoint()
+    {
+        CombineUtil_Jazz_E.Combine_AnimEnemyPro_Destroy_TriggerPoint(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCheck/Jazz_E/Combine AnimEnemyPro Jazz_Enemy_yuepu_05")]
+    static void Combine_MultiSegmentAnimationTile_Jazz_Enemy_yuepu_05()
+    {
+        CombineUtil_Jazz_E.Combine_AnimEnemyPro_Jazz_Enemy_yuepu_05(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCheck/Jazz_E/Combine JumpDistanceQTETile Jazz_Tile_Jump_Empty1x1")]
+    static void Combine_JumpDistanceQTETile_Jazz_Tile_Jump_Empty1x1()
+    {
+        CombineUtil_Jazz_E.Combine_JumpDistanceQTETile_Jazz_Tile_Jump_Empty1x1(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCheck/Jazz_E/Combine JumpDistanceQTETile Jazz_Tile_xiaohao_jump")]
+    static void Combine_JumpDistanceQTETile_Jazz_Tile_xiaohao_jump()
+    {
+        CombineUtil_Jazz_E.Combine_JumpDistanceQTETile_Jazz_Tile_xiaohao_jump(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCheck/Jazz_E/Combine JumpDistanceTrigger")]
+    static void Combine_JumpDistanceTrigger_Jazz_E()
+    {
+        CombineUtil_Jazz_E.Combine_JumpDistanceTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Jazz_E/Combine SynchronizedAnimationMidground")]
+    static void Combine_SynchronizedAnimationMidground()
+    {
+        CombineUtil_Jazz_E.Combine_SynchronizedAnimationMidground(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Jazz_E/Combine DropDieTrigger")]
+    static void Combine_DropDieTrigger_Jazz_E()
+    {
+        CombineUtil_Jazz_E.Combine_DropDieTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Jazz_E/Combine SwitchListenTrigger")]
+    static void Combine_SwitchListenTrigger()
+    {
+        CombineUtil_Jazz_E.Combine_SwitchListenTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Jazz_E/Combine NormalEnemy")]
+    static void Combine_NormalEnemy_Jazz_E()
+    {
+        CombineUtil_Jazz_E.Combine_NormalEnemy(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Jazz_E/Combine SwitchSendTrigger")]
+    static void Combine_SwitchSendTrigger()
+    {
+        CombineUtil_Jazz_E.Combine_SwitchSendTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Jazz_E/Combine TwoEffectTriggerPro")]
+    static void Combine_TwoEffectTriggerPro_Jazz_E()
+    {
+        CombineUtil_Jazz_E.Combine_TwoEffectTriggerPro(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Jazz_E/Combine PathGuideSendTrigger")]
+    static void Combine_PathGuideSendTrigger()
+    {
+        CombineUtil_Jazz_E.Combine_PathGuideSendTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Jazz_E/Combine DiamondAward")]
+    static void Combine_DiamondAward_Jazz_E()
+    {
+        CombineUtil_Jazz_E.Combine_DiamondAward(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Jazz_E/Combine LeftRightRotateSendTrigger")]
+    static void Combine_LeftRightRotateSendTrigger()
+    {
+        CombineUtil_Jazz_E.Combine_LeftRightRotateSendTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Jazz_E/Combine WideTilePro")]
+    static void Combine_WideTilePro_Jazz_E()
+    {
+        CombineUtil_Jazz_E.Combine_WideTilePro(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Jazz_E/Combine WorldThemesTrigger")]
+    static void Combine_WorldThemesTrigger_Jazz_E()
+    {
+        CombineUtil_Jazz_E.Combine_WorldThemesTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Jazz_E/Combine InputResetTrigger")]
+    static void Combine_InputResetTrigger_Jazz_E()
+    {
+        CombineUtil_Jazz_E.Combine_InputResetTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Jazz_E/Combine CrownFragment")]
+    static void Combine_CrownFragment_Jazz_E()
+    {
+        CombineUtil_Jazz_E.Combine_CrownFragment(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Jazz_E/Combine CurvedBendBoxTrigger")]
+    static void Combine_Combine_CurvedBendBoxTrigger_Jazz_E()
+    {
+        CombineUtil_Jazz_E.Combine_CurvedBendBoxTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Jazz_E/Combine DepartVehicleTrigger")]
+    static void Combine_Combine_DepartVehicleTrigger_Jazz_E()
+    {
+        CombineUtil_Jazz_E.Combine_DepartVehicleTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Jazz_E/Combine PathToMoveByUnpredictableDiamondAwardTrigger")]
+    static void Combine_PathToMoveByUnpredictableDiamondAwardTrigger_Jazz_E()
+    {
+        CombineUtil_Jazz_E.Combine_PathToMoveByUnpredictableDiamondAwardTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Jazz_E/Combine ChangeCameraEffectByNameTrigger")]
+    static void Combine_ChangeCameraEffectByNameTrigger_Jazz_E()
+    {
+        CombineUtil_Jazz_E.Combine_ChangeCameraEffectByNameTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Jazz_E/Combine BuyOutRebirthBoxTrigger")]
+    static void Combine_BuyOutRebirthBoxTrigger_Jazz_E()
+    {
+        CombineUtil_Jazz_E.Combine_BuyOutRebirthBoxTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Jazz_E/Combine RoleMoveLimitTrigger")]
+    static void Combine_RoleMoveLimitTrigger_Jazz_E()
+    {
+        CombineUtil_Jazz_E.Combine_RoleMoveLimitTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Jazz_E/Combine PathToMoveByRoleTrigger")]
+    static void Combine_PathToMoveByRoleTrigger_Jazz_E()
+    {
+        CombineUtil_Jazz_E.Combine_PathToMoveByRoleTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Jazz_E/Combine DisableInputTrigger")]
+    static void Combine_DisableInputTrigger_Jazz_E()
+    {
+        CombineUtil_Jazz_E.Combine_DisableInputTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Jazz_E/Combine OpenFollowTrigger")]
+    static void Combine_OpenFollowTrigger_Jazz_E()
+    {
+        CombineUtil_Jazz_E.Combine_OpenFollowTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Jazz_E/Combine EnableInputTrigger")]
+    static void Combine_EnableInputTrigger_Jazz_E()
+    {
+        CombineUtil_Jazz_E.Combine_EnableInputTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Jazz_E/Combine PathToMoveByUnpredictableCrownAwardTrigger")]
+    static void Combine_PathToMoveByUnpredictableCrownAwardTrigger_Jazz_E()
+    {
+        CombineUtil_Jazz_E.Combine_PathToMoveByUnpredictableCrownAwardTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Jazz_E/Combine CrownFromFragment")]
+    static void Combine_CrownFromFragment_Jazz_E()
+    {
+        CombineUtil_Jazz_E.Combine_CrownFromFragment(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Jazz_E/Combine PathToMoveByRoleForLerpTrigger")]
+    static void Combine_PathToMoveByRoleForLerpTrigger()
+    {
+        CombineUtil_Jazz_E.Combine_PathToMoveByRoleForLerpTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Jazz_E/Combine WinBeforeFinishTrigger")]
+    static void Combine_WinBeforeFinishTrigger_Jazz_E()
+    {
+        CombineUtil_Jazz_E.Combine_WinBeforeFinishTrigger(Selection.transforms);
+    }
+    [MenuItem("Sloth/CombineCheck/Jazz_E/Combine HangingWinTile")]
+    static void Combine_HangingWinTile_Jazz_E()
+    {
+        CombineUtil_Jazz_E.Combine_HangingWinTile(Selection.transforms);
+    }
+
+
+    #endregion
+
 }

@@ -14,6 +14,25 @@ public partial class Sloth : Editor
         EditorUtility.DisplayDialog("message", "rename complete!", "ok");
     }
 
+    [MenuItem("Sloth/Node/RmAllChildNode")]
+    static void RmAllChildNode()
+    {
+        GameObject[] objs = Selection.gameObjects;
+        foreach (GameObject obj in objs)
+        {
+            List<Transform> allChild = new List<Transform>();
+            for (int i = 0; i < obj.transform.childCount; i++)
+            {
+                allChild.Add(obj.transform.GetChild(i));
+            }
+            foreach (Transform ts in allChild)
+            {
+                GameObject.DestroyImmediate(ts.gameObject);
+            }
+            allChild.Clear();
+        }
+    }
+
     [MenuItem("Sloth/Node/Copy node path")]
     public static void GetNodePath()
     {

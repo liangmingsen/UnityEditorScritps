@@ -4,29 +4,42 @@ using UnityEngine;
 using UnityEditor;
 using System.IO;
 using Umeng;
+using UnityEditor.SceneManagement;
 
 public class BakedLightmapUtil
 {
     private static Dictionary<string, bool> _hasDict = new Dictionary<string, bool>();
 
+    private static string GetLightmapDataPath()
+    {
+        string fileName = EditorSceneManager.GetActiveScene().name + "_lightmapData.txt";
+        string lightmapDataFilePath = Application.dataPath + @"/_Sloth/ExportJson/" + fileName;
+        return lightmapDataFilePath;
+    }
+
     public static void WriteBakeLightmap()
     {
-        TextAsset txt = AssetDatabase.LoadAssetAtPath<TextAsset>(FileUtils.GetLightmapDataPathAsset());
-        if (txt == null)
+        string filePath = GetLightmapDataPath();
+        if (!File.Exists(filePath))
         {
-            Debug.LogError("找不到文件" + FileUtils.GetLightmapDataPathAsset());
+            Debug.LogError("找不到文件:" + filePath);
             return;
         }
-        Umeng.JSONObject jo = Umeng.JSONObject.Parse(txt.text) as Umeng.JSONObject;
+        Debug.Log("start read lightmap data:" + filePath);
+        // return;
+        StreamReader sr = new StreamReader(filePath);
+        string jsonStr = sr.ReadToEnd();
+        sr.Close();
+        Umeng.JSONObject jo = Umeng.JSONObject.Parse(jsonStr) as Umeng.JSONObject;
         if (jo == null)
         {
-            Debug.LogError("转JSON错误：" + FileUtils.GetLightmapDataPathAsset());
+            Debug.LogError("转JSON错误：" + filePath);
             return;
         }
         Umeng.JSONObject lightmapData = jo["lightmapData"] as Umeng.JSONObject;
         if (lightmapData == null)
         {
-            Debug.LogError("JSON数据错误：" + FileUtils.GetLightmapDataPathAsset());
+            Debug.LogError("JSON数据错误：" + filePath);
             return;
         }
         _hasDict.Clear();
@@ -123,7 +136,12 @@ public class BakedLightmapUtil
             }
         }
 
-        StreamWriter sw = FileUtils.GetLightmapDataFile();
+        string filePath = GetLightmapDataPath();
+        if (File.Exists(filePath))
+        {
+            File.Delete(filePath);
+        }
+        StreamWriter sw = new StreamWriter(filePath);
         Umeng.JSONObject rootJson = new Umeng.JSONObject();
 
         Umeng.JSONObject staticJson = new Umeng.JSONObject();
@@ -135,7 +153,8 @@ public class BakedLightmapUtil
 
         sw.Write(rootJson.ToString());
         sw.Close();
-        Application.OpenURL(FileUtils.GetLightmapDataPath());
+        AssetDatabase.Refresh();
+        Application.OpenURL(filePath);
 
     }
     const string assetPath = "_saving/meshData.asset";

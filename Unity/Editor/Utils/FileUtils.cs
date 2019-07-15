@@ -2,12 +2,11 @@
 using System.Text;
 using UnityEngine;
 
-public class FileUtils {
+public class FileUtils
+{
     private static string filepath = Application.dataPath + @"/_Sloth/Editor/export.txt";
     private static string staticFilePath = Application.dataPath + @"/_Sloth/ExportJson/tagStatic.txt";
     private static string staticFilePathAsset = @"Assets/_Sloth/ExportJson/tagStatic.txt";
-    private static string lightmapDataFilePath = Application.dataPath + @"/_Sloth/ExportJson/lightmapData.txt";
-    private static string lightmapDataFilePathAsset = @"Assets/_Sloth/ExportJson/lightmapData.txt";
     private static string particleFilePath = Application.dataPath + @"/_Sloth/ExportJson/particles.json";
     private static string FragmentFilePath = Application.dataPath + @"/_Sloth/ExportJson/fragment.json";
     private static string FragmentFilePathAsset = @"Assets/_Sloth/ExportJson/fragment.json";
@@ -95,22 +94,6 @@ public class FileUtils {
     public static string GetParticleFilePath()
     {
         return particleFilePath;
-    }
-
-    public static string GetLightmapDataPath()
-    {
-        return lightmapDataFilePath;
-    }
-
-    public static string GetLightmapDataPathAsset()
-    {
-        return lightmapDataFilePathAsset;
-    }
-
-    public static StreamWriter GetLightmapDataFile()
-    {
-        checkFile(lightmapDataFilePath);
-        return new StreamWriter(lightmapDataFilePath);
     }
 
     public static string GetTagStaticPath()

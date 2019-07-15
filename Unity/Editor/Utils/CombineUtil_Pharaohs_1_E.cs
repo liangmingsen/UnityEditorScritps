@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class CombineUtil_4_1 : CombineColliderUtil
+public class CombineUtil_Pharaohs_1_E : CombineColliderUtil
 {
 
     #region 节点优化
@@ -1680,10 +1680,9 @@ public class CombineUtil_4_1 : CombineColliderUtil
                 return;
             }
         }
-        FreeCollideTile fTile = tileList[0];
         foreach (FreeCollideTile tile in tileList)
         {
-            if (tile.data.TileWidth != fTile.data.TileWidth || tile.data.TileHeight != fTile.data.TileHeight || tile.m_gridId != fTile.m_gridId)
+            if (tile.data.TileWidth != 5 || tile.data.TileHeight != 1 || tile.m_gridId != tileList[0].m_gridId)
             {
                 Debug.LogError("脚本参数不一致");
                 return;
@@ -1708,12 +1707,12 @@ public class CombineUtil_4_1 : CombineColliderUtil
         BoxCollider newBC = go.AddComponent<BoxCollider>();
         newBC.isTrigger = true;
         newBC.center = center;
-        newBC.size = new Vector3(size.x, size.y, height);
+        newBC.size = new Vector3(5, 0.4f, height);
 
         FreeCollideTile newFC = go.AddComponent<FreeCollideTile>();
-        newFC.m_id = fTile.m_id;
-        newFC.m_gridId = fTile.m_gridId;
-        newFC.data.TileWidth = fTile.data.TileWidth;
+        newFC.m_id = 524;
+        newFC.m_gridId = tileList[0].m_gridId;
+        newFC.data.TileWidth = tileList[0].data.TileWidth;
         newFC.data.TileHeight = height;
 
         string sx = px.ToString("0.0000000000");
@@ -1727,21 +1726,8 @@ public class CombineUtil_4_1 : CombineColliderUtil
         int length = tfs.Length;
         for (int i = 0; i < length; i++)
         {
-            Transform tf = tfs[i];
-            if (tf.GetComponentsInChildren<MeshFilter>() == null)
-            {
-                DestroyGameObject(tfs[i].gameObject);
-            }
-            else
-            {
-                BoxCollider bc = tf.GetComponentInChildren<BoxCollider>();
-                if(bc != null)
-                {
-                    DestroyComponent(bc);
-                }
-            }
+            DestroyGameObject(tfs[i].gameObject);
         }
-
         DebugLog();
     }
 

@@ -191,7 +191,7 @@ public class SlothCombineCollider : Editor
         CombineUtil_6_1.ChangeWideTileProLocalScaleToOne(Selection.transforms);
     }
 
-    [MenuItem("Sloth/CombineCollider/L6/Combine block WideTilePro Anomaly %g")]
+    [MenuItem("Sloth/CombineCollider/L6/Combine block WideTilePro Anomaly")]
     static void Combine_block_WideTilePro_Anomaly_6()
     {
         CombineUtil_6_1.Combine_block_WideTilePro_Anomaly(Selection.transforms);
@@ -207,6 +207,33 @@ public class SlothCombineCollider : Editor
     static void RemoveTagGameobject_6()
     {
         CombineUtil_6_1.tagDestroyGos = new List<Transform>();
+    }
+
+    #endregion
+
+    #region Waltz_1_E
+    [MenuItem("Sloth/CombineCollider/Waltz_1_E/Combine block FreeCollideTile")]
+    static void Combine_block_FreeCollideTile_Waltz_1_E()
+    {
+        CombineUtil_Waltz_1_E.Combine_block_FreeCollideTile(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCollider/Waltz_1_E/Combine NormalTile 2 WideTilePro")]
+    static void Combine_block_NormalTile_2_WideTilePro_Waltz_1_E()
+    {
+        CombineUtil_Waltz_1_E.Combine_block_NormalTile_2_WideTipePro(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCollider/Waltz_1_E/Combine WideTilePro block")]
+    static void Combine_WideTileProTo_Block()
+    {
+        CombineUtil_Waltz_1_E.Combine_WideTileProTo_Block(Selection.transforms);
+    }
+
+    [MenuItem("Sloth/CombineCollider/Waltz_1_E/Combine WideTilePro block Anomaly %g")]
+    static void Combine_block_WideTilePro_Anomaly_Waltz_1_E()
+    {
+        CombineUtil_Waltz_1_E.Combine_block_WideTilePro_Anomaly(Selection.transforms);
     }
 
     #endregion

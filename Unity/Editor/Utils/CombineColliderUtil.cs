@@ -90,9 +90,9 @@ public class CombineColliderUtil : CombineBase
     /// </summary>
     /// <param name="tiles"></param>
     /// <returns></returns>
-    public static bool CheckBaseElement_tileId(List<BaseElement> tiles)
+    public static bool CheckBaseElement_tileId<T>(List<T> tiles) where T : BaseElement
     {
-        foreach (BaseElement tile in tiles)
+        foreach (T tile in tiles)
         {
             if (tile.m_gridId != tiles[0].m_gridId)
             {
@@ -103,7 +103,55 @@ public class CombineColliderUtil : CombineBase
         return true;
     }
 
+    /// <summary>
+    /// 计算位置 和size
+    /// </summary>
+    /// <param name="tfs"></param>
+    /// <param name="colliderList"></param>
+    /// <param name="pos"></param>
+    /// <param name="size"></param>
+    public static void CalculateMulti_1x1_WideTileProToBlockSize(Transform[] tfs, List<BoxCollider> colliderList, ref Vector3 pos, ref Vector3 size, ref Vector3 minPos, ref Vector3 maxPos)
+    {
+        BoxCollider bc = colliderList[0];
 
+        minPos = tfs[0].localPosition;
+        maxPos = tfs[0].localPosition;
+        Vector3 minSize = colliderList[0].size;
+        Vector3 maxSize = colliderList[0].size;
+
+        int length = tfs.Length;
+        for (int i = 0; i < length; i++)
+        {
+            Transform t = tfs[i];
+            
+            minPos.x = Mathf.Min(t.localPosition.x, minPos.x);
+            minPos.y = Mathf.Min(t.localPosition.y, minPos.y);
+            minPos.z = Mathf.Min(t.localPosition.z, minPos.z);
+
+            maxPos.x = Mathf.Max(t.localPosition.x, maxPos.x);
+            maxPos.y = Mathf.Max(t.localPosition.y, maxPos.y);
+            maxPos.z = Mathf.Max(t.localPosition.z, maxPos.z);
+        }
+
+        float newPosX = (minPos.x + maxPos.x) * 0.5f;
+        float newPosY = minPos.y;
+        float newPosZ = (minPos.z + maxPos.z) * 0.5f;
+
+        float size_x = maxPos.x - minPos.x + 1;
+        float size_y = bc.size.y;
+        float size_z = maxPos.z - minPos.z + 1;
+
+        pos = new Vector3(newPosX, newPosY, newPosZ);
+        size = new Vector3(size_x, size_y, size_z);
+    }
+
+    /// <summary>
+    /// 计算位置 和size
+    /// </summary>
+    /// <param name="tfs"></param>
+    /// <param name="colliderList"></param>
+    /// <param name="pos"></param>
+    /// <param name="size"></param>
     public static void CalculateMulti_Xx1_WideTileProToBlockSize(Transform[] tfs, List<BoxCollider> colliderList, ref Vector3 pos, ref Vector3 size)
     {
         Vector3 minPos = tfs[0].localPosition;
@@ -147,10 +195,10 @@ public class CombineColliderUtil : CombineBase
         float newGoPosZ = minPos.z + (maxPos.z - minPos.z) * 0.5f;
 
         float sizeX = (maxSize.x - minSize.x);
-        float sizeZ = size.z * tfs.Length;
+        float sizeZ = maxPos.z - minPos.z + 1;
 
         pos = new Vector3(newGoPosX, tfs[0].transform.localPosition.y, newGoPosZ);
-        size = new Vector3(sizeX, colliderList[0].size.y, sizeZ);
+        size = new Vector3(sizeX, colliderList[0].size.y, Mathf.CeilToInt(sizeZ));
     }
 
 
